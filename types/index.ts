@@ -115,3 +115,16 @@ export type Rating = {
   comment: string | null
   created_at: string
 }
+
+export type TradeOutcome = 'completed' | 'partial' | 'cancelled'
+
+export type Trade = {
+  id: string
+  chat_id: string
+  service_id: string | null
+  participant_1: string
+  participant_2: string
+  closed_by: string
+  outcome: TradeOutcome
+  closed_at: string
+}

@@ -3,6 +3,7 @@ import { getAuthUser, getCurrentProfile } from '@/lib/auth/session'
 import { getCommunityService } from '@/data/community.service'
 import { getConversations } from '@/lib/chat/getConversations'
 import { AppShell } from '@/components/layout/AppShell'
+import { NotificationWatcher } from '@/components/features/notifications/NotificationWatcher'
 
 /**
  * Layout da área autenticada. O middleware já protege estas rotas; aqui
@@ -40,6 +41,7 @@ export default async function AppLayout({
       conversations={conversations}
       isAdmin={profile?.is_admin ?? false}
     >
+      <NotificationWatcher userId={user.id} />
       {children}
     </AppShell>
   )

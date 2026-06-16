@@ -2,10 +2,12 @@
 
 import { revalidatePath } from 'next/cache'
 import { getChatService } from '@/data/chat.service'
+import { getTradeService } from '@/data/trade.service'
 import { getAuthUser, getCurrentProfile } from '@/lib/auth/session'
 import { createAdminClient } from '@/lib/supabase/admin'
+import type { TradeOutcome } from '@/types'
 
-export type TradeOutcome = 'completed' | 'partial' | 'cancelled'
+export type { TradeOutcome }
 
 type ActionResult = { success: true } | { success: false; error: string }
 
@@ -63,6 +65,16 @@ export async function closeTradeAction(
         : `${name} encerrou a combinação. A oferta voltou para a roda dos vizinhos.`
 
   await chatSvc.sendMessage(chatId, user.id, systemMessage, { bypassStatusGuard: true })
+
+  // Registra a troca como entidade própria para histórico
+  await getTradeService().createTrade({
+    chat_id: chatId,
+    service_id: chat.service_id,
+    participant_1: chat.participant_1,
+    participant_2: chat.participant_2,
+    closed_by: user.id,
+    outcome,
+  })
 
   revalidatePath(`/mensagens/${chatId}`)
   revalidatePath('/mensagens')

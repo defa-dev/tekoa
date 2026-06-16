@@ -321,6 +321,38 @@ export interface Database {
           created_at?: string
         }
       }
+      trades: {
+        Row: {
+          id: string
+          chat_id: string
+          service_id: string | null
+          participant_1: string
+          participant_2: string
+          closed_by: string
+          outcome: 'completed' | 'partial' | 'cancelled'
+          closed_at: string
+        }
+        Insert: {
+          id?: string
+          chat_id: string
+          service_id?: string | null
+          participant_1: string
+          participant_2: string
+          closed_by: string
+          outcome: 'completed' | 'partial' | 'cancelled'
+          closed_at?: string
+        }
+        Update: {
+          id?: string
+          chat_id?: string
+          service_id?: string | null
+          participant_1?: string
+          participant_2?: string
+          closed_by?: string
+          outcome?: 'completed' | 'partial' | 'cancelled'
+          closed_at?: string
+        }
+      }
     }
     Views: {
       [_ in never]: never

@@ -24,7 +24,7 @@ export function LeftRail({
   return (
     <aside
       className={cn(
-        'sticky top-0 h-screen overflow-y-auto px-4 pb-5 pt-[var(--rail-top,104px)]',
+        'no-scrollbar sticky top-0 h-screen overflow-y-auto px-4 pb-5 pt-[var(--rail-top,104px)]',
         className
       )}
     >
