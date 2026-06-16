@@ -1,0 +1,19 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <rect width="512" height="512" rx="112" fill="#b8342a"/>
+  <!-- Mosaico afro-brasileiro, sutil, no canto -->
+  <g fill="#f5efe6" opacity="0.12">
+    <rect x="352" y="48" width="48" height="48"/>
+    <rect x="448" y="48" width="48" height="48"/>
+    <rect x="400" y="96" width="48" height="48"/>
+    <rect x="352" y="144" width="48" height="48"/>
+    <rect x="448" y="144" width="48" height="48"/>
+  </g>
+  <!-- Roda: duas mãos/caminhos em troca circular -->
+  <g fill="none" stroke="#f5efe6" stroke-width="34" stroke-linecap="round">
+    <path d="M168 200 a96 96 0 1 1 0 112"/>
+  </g>
+  <g fill="none" stroke="#c9a97a" stroke-width="34" stroke-linecap="round">
+    <path d="M344 312 a96 96 0 1 1 0 -112"/>
+  </g>
+  <circle cx="256" cy="256" r="26" fill="#f5efe6"/>
+</svg>
