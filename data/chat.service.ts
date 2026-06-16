@@ -151,7 +151,7 @@ export class ChatService extends BaseService<Chat> {
   ): Promise<ServiceResult<Chat>> {
     try {
       const existing = await this.findServiceInterestChat(serviceId, interestedUserId)
-      if (!existing.success) return existing
+      if (!existing.success) return existing as ServiceResult<Chat>
       if (existing.data) {
         return { success: true, data: existing.data }
       }
@@ -255,13 +255,13 @@ export class ChatService extends BaseService<Chat> {
       chats.map(async (chat) => {
         const otherParticipantId =
           chat.participant_1 === userId ? chat.participant_2 : chat.participant_1
-        const unreadCount = await this.getUnreadCount(chat.id, userId)
+        const unreadCount = await this.getUnreadCountForChat(chat.id, userId)
         return { ...chat, otherParticipantId, unreadCount }
       })
     )
   }
 
-  private async getUnreadCount(chatId: string, userId: string): Promise<number> {
+  private async getUnreadCountForChat(chatId: string, userId: string): Promise<number> {
     try {
       const client = await this.ensureClient()
       const { count, error } = await client

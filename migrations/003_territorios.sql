@@ -5,7 +5,7 @@
 -- 2. Trocas/Feira/Mural ganham território de origem (community) e
 --    alcance (reach): só na comunidade, comunidades específicas ou todas.
 --
--- Execute no SQL Editor do Supabase.
+-- Execute no SQL Editor do Supabase (ver migrations/README.md).
 -- ================================================================
 
 -- ----------------------------------------------------------------

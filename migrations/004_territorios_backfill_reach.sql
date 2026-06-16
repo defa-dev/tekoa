@@ -6,7 +6,8 @@
 -- anteriores ao escopo territorial devem ficar só na comunidade
 -- de origem (reach = 'own').
 --
--- Rode isto se você já executou docs/migration-territorios.sql.
+-- Rode isto se você já executou migrations/003_territorios.sql
+-- com DEFAULT 'all' em reach (corrige dados antigos).
 -- ================================================================
 
 UPDATE public.services

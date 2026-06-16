@@ -4,7 +4,7 @@
 -- Transforma "comunidade" (hoje texto livre em users.location) numa
 -- entidade de verdade, gerenciável por administradores.
 --
--- Execute no SQL Editor do Supabase, ou via psql.
+-- Execute no SQL Editor do Supabase (ver migrations/README.md).
 -- ================================================================
 
 -- ----------------------------------------------------------------

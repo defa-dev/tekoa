@@ -1,7 +1,10 @@
-# 📦 Pacote 3: Funcionalidade Principal - Tinder de Trocas/Serviços
+# Pacote 3: Trocas / Serviços
+
+> **Implementado (jun/2026):** ver [Estado-do-Projeto.md](Estado-do-Projeto.md).  
+> Resumo: lista + toggle Oferecem/Buscam (não swipe), matching sugerido, interesse com chat `pending` → aceite/recusa → conversa, `/trocas/minhas`. O texto abaixo é o **plano original** de tarefas.
 
 ## Visão Geral
-Este é o coração do MVP: sistema de matching entre ofertas e pedidos de serviços, com chat integrado e avaliações. Implementa a funcionalidade tipo "Tinder" para trocas de serviços entre usuários.
+Este é o coração do MVP: sistema de matching entre ofertas e pedidos de serviços, com chat integrado e avaliações.
 
 ---
 

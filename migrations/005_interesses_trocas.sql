@@ -3,7 +3,7 @@
 -- ================================================================
 -- Cada demonstração de interesse abre um chat com status 'pending'.
 -- O dono do serviço aceita ou recusa; só então a conversa libera.
--- Rode no SQL Editor se ainda não aplicou.
+-- Rode no SQL Editor (ver migrations/README.md).
 -- ================================================================
 
 ALTER TABLE public.chats

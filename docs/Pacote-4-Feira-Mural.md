@@ -1,5 +1,7 @@
 # 📦 Pacote 4: Feira do Rolo e Mural de Avisos
 
+> **Status:** feira e mural implementados (sem likes/comentários no mural). Ver [Estado-do-Projeto.md](Estado-do-Projeto.md). Plano de referência abaixo.
+
 ## Visão Geral
 Este pacote implementa as funcionalidades secundárias do MVP: marketplace de produtos usados (Feira do Rolo) e mural comunitário de avisos. Ambos compartilham componentes com o Pacote 3 (chat, ratings).
 

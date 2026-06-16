@@ -1,5 +1,7 @@
 # 📦 Pacote 1: Infraestrutura e Abstração de Dados
 
+> **Status:** implementado no MVP. Detalhes atuais em [Estado-do-Projeto.md](Estado-do-Projeto.md). Plano de referência abaixo.
+
 ## Visão Geral
 Este pacote estabelece a fundação do projeto: configuração do banco de dados, autenticação e camada de abstração que isola o frontend das implementações específicas do backend.
 
@@ -11,7 +13,7 @@ Este pacote estabelece a fundação do projeto: configuração do banco de dados
 
 #### **I.1.1 - Schema do Banco de Dados**
 **Arquivos a criar:**
-- `docs/database-schema.sql` - Script SQL para criar todas as tabelas
+- `migrations/001_schema_inicial.sql` - Script SQL para criar todas as tabelas (ver `migrations/README.md`)
 
 **Propósito:**
 - Definir estrutura completa do banco de dados

@@ -1,5 +1,7 @@
 # 📦 Pacote 2: Componentes e Design System
 
+> **Status:** design system e componentes base implementados. Ver [ds.md](ds.md) e [Estado-do-Projeto.md](Estado-do-Projeto.md). Plano de referência abaixo.
+
 ## Visão Geral
 Este pacote cria toda a base visual do projeto: design tokens, componentes reutilizáveis, sistema de layout e navegação. Foco em mobile-first, acessibilidade e consistência visual.
 
