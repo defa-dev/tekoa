@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { getChatService } from '@/data/chat.service'
 import { getAuthUser } from '@/lib/auth/session'
+import type { Message } from '@/types'
 
 type ActionResult<T = unknown> =
   | { success: true; data: T }
@@ -39,3 +40,4 @@ export async function markChatReadAction(chatId: string): Promise<ActionResult> 
   revalidatePath('/mensagens')
   return { success: true, data: null }
 }
+

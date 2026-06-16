@@ -1,5 +1,6 @@
 import { Avatar } from '@/components/ui/Avatar'
 import { Badge } from '@/components/ui/Badge'
+import { Icon } from '@/components/icons/Icon'
 import { InterestButton } from './InterestButton'
 import { categoryLabel, SERVICE_CATEGORIES } from '@/lib/categories'
 import { timeAgo } from '@/lib/utils'
@@ -11,9 +12,19 @@ interface ServiceCardProps {
   canInteract?: boolean
   /** Selo opcional (ex.: "Combina!") para matches. */
   highlight?: string
+  /** Score do match (0-5), exibe como estrelas. */
+  matchScore?: number
 }
 
-export function ServiceCard({ service, canInteract = true, highlight }: ServiceCardProps) {
+function renderStars(score: number) {
+  const stars = Math.round(score * 5 / 4) // normaliza ~0-4 pra ~0-5
+  const clamped = Math.max(1, Math.min(5, stars))
+  return Array.from({ length: clamped }).map((_, i) => (
+    <Icon key={i} name="star" size={14} className="text-ouro fill-ouro" />
+  ))
+}
+
+export function ServiceCard({ service, canInteract = true, highlight, matchScore }: ServiceCardProps) {
   const name = service.user?.full_name || 'Vizinho(a)'
   const place = service.user?.location || 'comunidade'
 
@@ -46,6 +57,11 @@ export function ServiceCard({ service, canInteract = true, highlight }: ServiceC
           {categoryLabel(SERVICE_CATEGORIES, service.category)}
         </Badge>
         {highlight && <Badge type="novo">{highlight}</Badge>}
+        {matchScore !== undefined && (
+          <div className="flex items-center gap-0.5">
+            {renderStars(matchScore)}
+          </div>
+        )}
       </div>
 
       {canInteract && (

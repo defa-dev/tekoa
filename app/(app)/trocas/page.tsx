@@ -74,6 +74,7 @@ export default async function TrocasPage({
                   key={m.service.id}
                   service={m.service}
                   highlight="Combina!"
+                  matchScore={m.score}
                 />
               ))}
             </div>

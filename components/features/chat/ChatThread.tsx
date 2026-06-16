@@ -1,8 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
-import { sendMessageAction, markChatReadAction } from '@/app/(app)/mensagens/actions'
-import { useRealtimeNewMessages } from '@/lib/hooks/useRealtimeMessages'
+import { useEffect, useRef, useState, useCallback } from 'react'
 import { InterestReplyBar } from '@/components/features/chat/InterestReplyBar'
 import { Icon } from '@/components/icons/Icon'
 import { cn } from '@/lib/utils'
@@ -45,20 +43,40 @@ export function ChatThread({
     setMessages((prev) => (prev.some((m) => m.id === msg.id) ? prev : [...prev, msg]))
   }
 
-  useRealtimeNewMessages(chatId, (msg) => {
-    appendUnique(msg)
-    if (msg.sender_id !== currentUserId) {
-      markChatReadAction(chatId)
+  const pollMessages = useCallback(async () => {
+    try {
+      const res = await fetch(`/api/messages/${chatId}`)
+      if (res.ok) {
+        const data = await res.json()
+        setMessages(data)
+      }
+    } catch (err) {
+      console.error('[ChatThread] Error polling messages:', err)
     }
-  })
+  }, [chatId])
+
+  const markChatRead = useCallback(async () => {
+    try {
+      await fetch(`/api/messages/${chatId}`, { method: 'POST' })
+    } catch (err) {
+      console.error('[ChatThread] Error marking chat as read:', err)
+    }
+  }, [chatId])
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
 
+  // Polling: refetch mensagens a cada 2 segundos
   useEffect(() => {
-    markChatReadAction(chatId)
-  }, [chatId])
+    const interval = setInterval(pollMessages, 2000)
+    return () => clearInterval(interval)
+  }, [pollMessages])
+
+  // Marcar como lido ao entrar
+  useEffect(() => {
+    markChatRead()
+  }, [chatId, markChatRead])
 
   async function handleSend(e: React.FormEvent) {
     e.preventDefault()
@@ -66,21 +84,29 @@ export function ChatThread({
     if (!content || sending || !canCompose) return
 
     setSending(true)
+    const originalText = text
     setText('')
-    const res = await sendMessageAction(chatId, content)
-    if (res.success) {
-      appendUnique({
-        id: res.data.id,
-        chat_id: chatId,
-        sender_id: currentUserId,
-        content,
-        read: false,
-        created_at: new Date().toISOString(),
+
+    try {
+      const res = await fetch('/api/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chatId, content }),
       })
-    } else {
-      setText(content)
+
+      if (res.ok) {
+        const message = await res.json()
+        appendUnique(message)
+      } else {
+        setText(originalText)
+        console.error('[ChatThread] Failed to send message:', res.statusText)
+      }
+    } catch (err) {
+      setText(originalText)
+      console.error('[ChatThread] Error sending message:', err)
+    } finally {
+      setSending(false)
     }
-    setSending(false)
   }
 
   return (

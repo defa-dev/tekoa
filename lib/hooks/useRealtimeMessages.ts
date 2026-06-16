@@ -79,28 +79,45 @@ export function useRealtimeMessages(options: UseRealtimeMessagesOptions) {
     }
 
     const client = clientRef.current
+    let retryCount = 0
+    const maxRetries = 3
 
-    try {
-      // Subscrever ao chat
-      const channelId = client.subscribeToChat(chatId, handlePayload)
-      channelIdRef.current = channelId
+    const attemptSubscribe = () => {
+      try {
+        // Subscrever ao chat
+        const channelId = client.subscribeToChat(chatId, handlePayload)
+        channelIdRef.current = channelId
 
-      // Verificar conexão após um delay
-      setTimeout(() => {
-        const isActive = client.isChannelActive(channelId)
-        setIsConnected(isActive)
+        // Verificar conexão após um delay
+        const checkTimeout = setTimeout(() => {
+          const isActive = client.isChannelActive(channelId)
+          setIsConnected(isActive)
 
-        if (!isActive) {
-          setError(new Error('Failed to connect to chat'))
-        }
-      }, 1000)
-    } catch (err) {
-      console.error('[useRealtimeMessages] Error subscribing:', err)
-      setError(err as Error)
+          if (!isActive && retryCount < maxRetries) {
+            retryCount++
+            console.warn(`[useRealtimeMessages] Channel not ready, retrying (${retryCount}/${maxRetries})`)
+            // Unsubscribe e tentar novamente
+            client.unsubscribe(channelId).catch(() => {})
+            setTimeout(attemptSubscribe, 1000 * retryCount) // backoff
+          } else if (!isActive) {
+            console.warn('[useRealtimeMessages] Failed to connect after retries')
+            setError(new Error('Failed to connect to chat after retries'))
+          }
+        }, 1500)
+
+        return checkTimeout
+      } catch (err) {
+        console.error('[useRealtimeMessages] Error subscribing:', err)
+        setError(err as Error)
+        return null
+      }
     }
+
+    const checkTimeout = attemptSubscribe()
 
     // Cleanup
     return () => {
+      if (checkTimeout) clearTimeout(checkTimeout)
       if (channelIdRef.current) {
         client.unsubscribe(channelIdRef.current).catch((err) => {
           console.error('[useRealtimeMessages] Error unsubscribing:', err)
