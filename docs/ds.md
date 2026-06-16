@@ -1,68 +1,75 @@
 # Design System — Tekoa
-**App Comunitário de Trocas e Economia Solidária**
-Versão 0.1 — Para handoff ao dev FE
+
+**Versão 1.0** — reflete o que está implementado no app (jun/2026).
+
+Fonte da verdade dos tokens: `app/globals.css` (`@theme` Tailwind v4).  
+Componentes base: `components/ui/`. Ícones: `components/icons/Icon.tsx`.
 
 ---
 
-## 1. Princípios de Identidade
+## 1. Princípios
 
-O Tekoa vive na tensão entre **rústico e eficiente**.
-Não é um app corporativo frio. Também não é artesanal ao ponto de parecer amador.
-É uma **feira coberta bem organizada** — estrutura funcional, com alma de comunidade.
+O Tekoa vive na tensão entre **rústico e eficiente** — uma feira coberta bem organizada: estrutura funcional, alma de comunidade.
 
-Referências visuais absorvidas:
-- Ancestralidades (Itaú Cultural) — preto profundo, ouro, editorial, espaço generoso
-- Tô no Mapa (IPAM) — UI funcional, botões grandes, ícones acessíveis
-- Artesol — grids modulares, fundo neutro que dá protagonismo ao conteúdo
-- Imaginário de quilombo, aldeia, feira de bairro — pigmentos, texturas, oralidade
+- Pigmentos de terra, ouro e musgo — nada de azul-tech genérico (exceto `anil` pontual em grafismos)
+- Fundo creme, texto tinta — nunca branco/preto puros
+- Profundidade por **cor de fundo e borda**, não por sombra decorativa
+- Mobile-first; desktop usa trilho lateral + painéis (mensagens)
+- **Território primeiro** — filtros, tags e escopo de publicação fazem parte da UI
 
 ---
 
-## 2. Paleta de Cores (Design Tokens)
+## 2. Cores (tokens)
 
-### Cores Primárias
+Definidas em `app/globals.css`. Use as classes Tailwind (`bg-terra`, `text-tinta-mid`…).
 
-| Token                  | Hex       | Uso principal                              |
-|------------------------|-----------|--------------------------------------------|
-| `--color-terra`        | `#B85C2A` | CTA primário, header, destaques            |
-| `--color-terra-dark`   | `#7A3A18` | Hover de botões, estados ativos            |
-| `--color-terra-light`  | `#F2E0D0` | Backgrounds de cards destacados, fills leves |
+### Terra (CTA, headers, destaque)
 
-### Cores de Acento
+| Token | Hex | Uso |
+|-------|-----|-----|
+| `terra` | `#b8342a` | Botão primário, TopBar, PageHeader, bolhas de chat (enviadas) |
+| `terra-dark` | `#872018` | Hover de primário |
+| `terra-light` | `#f4dcd6` | Fundos leves, hover secundário, tag de comunidade |
 
-| Token                  | Hex       | Uso principal                              |
-|------------------------|-----------|--------------------------------------------|
-| `--color-ouro`         | `#C9A97A` | Bordas, divisores, ícones secundários      |
-| `--color-ouro-light`   | `#F0E4CC` | Backgrounds sutis, estados hover leve      |
-| `--color-musgo`        | `#4A6741` | Badge de avisos, status positivo           |
-| `--color-musgo-light`  | `#D6E4D2` | Background de badge musgo                  |
+> A paleta evoluiu do handoff inicial (`#B85C2A`) para um vermelho-terra mais vivo, alinhado aos grafismos kusiwa.
 
-### Cores de Base (Fundos e Texto)
+### Ouro e musgo
 
-| Token                    | Hex       | Uso principal                              |
-|--------------------------|-----------|--------------------------------------------|
-| `--color-tinta`          | `#1C1510` | Texto primário (substitui preto puro)      |
-| `--color-tinta-mid`      | `#4A3D33` | Texto secundário, labels, metadados        |
-| `--color-tinta-light`    | `#8C7B6E` | Placeholders, hints, texto desabilitado    |
-| `--color-creme`          | `#F5EFE6` | Background primário (substitui #FFFFFF)    |
-| `--color-creme-dark`     | `#E8DDCC` | Background de inputs, cards secundários    |
-| `--color-palha`          | `#D4C4AE` | Bordas padrão, separadores                 |
+| Token | Hex | Uso |
+|-------|-----|-----|
+| `ouro` | `#c9a97a` | Bordas de ênfase, ícones inativos na nav |
+| `ouro-light` | `#f0e4cc` | Badges feira/categoria, fundos sutis |
+| `musgo` | `#4a6741` | Texto de badges aviso/evento |
+| `musgo-light` | `#d6e4d2` | Fundo de badges aviso/evento |
 
-### Cores Semânticas
+### Acentos de grafismo
 
-| Token                    | Hex       | Uso                                        |
-|--------------------------|-----------|--------------------------------------------|
-| `--color-sucesso`        | `#4A6741` | Confirmações, trocas realizadas            |
-| `--color-sucesso-light`  | `#D6E4D2` | Background de estado de sucesso            |
-| `--color-alerta`         | `#B85C2A` | Avisos importantes (reutiliza terra)       |
-| `--color-erro`           | `#8B2A1A` | Erros de formulário, falhas                |
-| `--color-erro-light`     | `#F2D5CF` | Background de estado de erro               |
+| Token | Hex | Uso |
+|-------|-----|-----|
+| `urucum` | `#b5231a` | Energia visual (grafismos) |
+| `brasa` | `#d6362a` | Destaques quentes |
+| `anil` | `#2c4a63` | Contraste frio pontual |
 
-### Modo Escuro (referência futura)
-O app começa em modo claro. Para dark mode futuro:
-- `--color-creme` → `#1C1510` (inverte base)
-- `--color-tinta` → `#F5EFE6` (inverte texto)
-- `--color-terra` permanece como acento quente
+### Base
+
+| Token | Hex | Uso |
+|-------|-----|-----|
+| `tinta` | `#1c1510` | Texto primário |
+| `tinta-mid` | `#4a3d33` | Texto secundário, labels |
+| `tinta-light` | `#8c7b6e` | Placeholder, meta |
+| `creme` | `#f5efe6` | Fundo da app |
+| `creme-dark` | `#e8ddcc` | Cards, inputs, bolhas recebidas |
+| `palha` | `#d4c4ae` | Bordas padrão |
+
+### Semânticas
+
+| Token | Uso |
+|-------|-----|
+| `sucesso` / `sucesso-light` | Confirmações (toast, estados positivos) |
+| `erro` / `erro-light` | Erros de formulário |
+| `alerta` | Reutiliza `terra` |
+
+`themeColor` do PWA: `#b8342a`.
 
 ---
 
@@ -70,387 +77,227 @@ O app começa em modo claro. Para dark mode futuro:
 
 ### Famílias
 
-| Role       | Família           | Import                                                                 |
-|------------|-------------------|------------------------------------------------------------------------|
-| Display    | **Syne**          | `https://fonts.googleapis.com/css2?family=Syne:wght@700;800`         |
-| Body       | **IBM Plex Sans** | `https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500`|
+| Papel | Token / classe | Fonte | Onde |
+|-------|----------------|-------|------|
+| Display | `font-display` | **Adumu** (local, `public/fonts/`) | Títulos de PageHeader, TopBar |
+| Hero inline | `font-title-inline` | **Adumu Inline** | Lettering grande (quando usado) |
+| Strong | `font-strong` | **Syne** 700–800 | Botões, números, ênfase curta |
+| Body | `font-body` | **IBM Plex Sans** 400–500 | Texto corrido, labels, badges |
 
-**Por quê?**
-- Syne: grossa, editorial, com personalidade. Evoca manifestos, cartazes de feira, força da oralidade.
-- IBM Plex Sans: legível, técnica, acessível. Garante eficiência no corpo do texto.
+Adumu e Adumu Inline carregam via `next/font/local` em `app/layout.tsx`. Syne e IBM Plex via Google Fonts.
 
-### Escala de Tipos
+### Escala prática (como no código)
 
-| Token              | Família    | Tamanho | Peso | Uso                                      |
-|--------------------|------------|---------|------|------------------------------------------|
-| `--text-display`   | Syne       | 28px    | 800  | Nome do app, hero de tela                |
-| `--text-h1`        | Syne       | 22px    | 700  | Títulos de seção principais              |
-| `--text-h2`        | Syne       | 17px    | 700  | Subtítulos, cabeçalhos de card           |
-| `--text-h3`        | Syne       | 14px    | 700  | Labels de grupo, nomes em feed           |
-| `--text-body`      | IBM Plex   | 14px    | 400  | Texto corrido, descrições                |
-| `--text-body-md`   | IBM Plex   | 14px    | 500  | Texto de ênfase, labels de campo         |
-| `--text-small`     | IBM Plex   | 12px    | 400  | Metadados, timestamps, dicas             |
-| `--text-micro`     | IBM Plex   | 10px    | 500  | Badges, labels de categoria uppercase    |
+| Uso | Classes típicas |
+|-----|-----------------|
+| Título de header | `font-display text-[22px] font-extrabold` (PageHeader) |
+| Título de TopBar | `font-display text-[18px] font-bold` |
+| Título de card | `font-strong text-[15px] font-bold` |
+| Corpo | `font-body text-[13px]` ou `text-sm` |
+| Meta / timestamp | `font-body text-[11px] text-tinta-light` |
+| Label de campo | `text-[10px] uppercase tracking-[0.07em] text-tinta-mid` |
+| Badge | `text-[10px] uppercase tracking-[0.06em]` |
 
-### Regras Tipográficas
-- Títulos: sempre sentence case (nunca ALL CAPS, exceto em labels micro com letter-spacing)
-- Line-height: `1.2` para display/h1, `1.4` para h2/h3, `1.6` para body
-- Letter-spacing: `0.06em` apenas em labels micro uppercase
-- Nunca usar peso 600 ou 700 em IBM Plex Sans no corpo — fica pesado demais
+### Regras
 
----
-
-## 4. Espaçamento (Spacing Scale)
-
-Base: **4px**
-
-| Token          | Valor | Uso típico                           |
-|----------------|-------|--------------------------------------|
-| `--space-1`    | 4px   | Gap mínimo, ícone-texto              |
-| `--space-2`    | 8px   | Gap interno de componente            |
-| `--space-3`    | 12px  | Padding interno de card pequeno      |
-| `--space-4`    | 16px  | Padding padrão de card / tela        |
-| `--space-5`    | 20px  | Margin entre seções                  |
-| `--space-6`    | 24px  | Padding de header / seção generosa   |
-| `--space-8`    | 32px  | Separação entre blocos maiores       |
-| `--space-12`   | 48px  | Margens de tela (top/bottom)         |
+- Títulos em sentence case (exceto labels micro uppercase)
+- `font-synthesis: none` no `body` — Adumu não tem bold sintético
+- Evitar peso 600+ em IBM Plex no corpo longo
 
 ---
 
-## 5. Border Radius
+## 4. Espaçamento e raio
 
-| Token              | Valor  | Uso                                      |
-|--------------------|--------|------------------------------------------|
-| `--radius-sm`      | 4px    | Badges, tags, labels inline              |
-| `--radius-md`      | 8px    | Inputs, botões, cards pequenos           |
-| `--radius-lg`      | 12px   | Cards maiores, modais, bottom sheets     |
-| `--radius-xl`      | 18px   | Containers de seção, frames de tela      |
-| `--radius-full`    | 9999px | Chips, avatares circulares               |
+Escala base 4px — use utilitários Tailwind (`p-4`, `gap-3`, `mb-6`).
 
-**Princípio:** bordas mais contidas que um app tech genérico, mas não completamente retas. O raio médio de 8px traz organicidade sem parecer infantil.
+| Token | Valor | Uso |
+|-------|-------|-----|
+| `radius-sm` | 4px | Badges (`rounded-sm`) |
+| `radius-md` | 8px | Botões, inputs (`rounded-md`) |
+| `radius-lg` | 12px | Cards |
+| `radius-xl` | 18px | PageHeader (`rounded-b-2xl`) |
+| `radius-full` | pill | Chips, Toggle, TerritoryToggle, avatares |
 
----
-
-## 6. Bordas e Divisores
-
-| Token                  | Valor                              | Uso                        |
-|------------------------|------------------------------------|----------------------------|
-| `--border-default`     | `1px solid #D4C4AE`                | Bordas padrão de card      |
-| `--border-emphasis`    | `1px solid #C9A97A`                | Card selecionado, hover    |
-| `--border-active`      | `1.5px solid #B85C2A`              | Item em foco, selecionado  |
-| `--border-divider`     | `0.5px solid #D4C4AE`              | Divisores internos         |
-
-Sem box-shadows decorativas. Profundidade é transmitida por cor de fundo, não por sombra.
+Padding lateral padrão de tela: `px-4` (16px).
 
 ---
 
-## 7. Iconografia
+## 5. Bordas
 
-Biblioteca: **Tabler Icons** (outline), já carregada via CDN.
-```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
-```
+- Padrão: `border border-palha`
+- Ênfase / hover de card: `hover:border-ouro`
+- Foco de input: `focus:border-terra`
+- Divisor: `border-t border-palha` ou `divide-palha`
 
-### Ícones por módulo
-
-| Módulo           | Ícone Tabler         |
-|------------------|----------------------|
-| Trocas           | `ti-arrows-exchange` |
-| Feira do Rolo    | `ti-shopping-bag`    |
-| Avisos           | `ti-speakerphone`    |
-| Blog             | `ti-pencil`          |
-| Perfil           | `ti-user`            |
-| Chat             | `ti-message`         |
-| Avaliação        | `ti-star`            |
-| Localização      | `ti-map-pin`         |
-| Notificação      | `ti-bell`            |
-| Configurações    | `ti-settings`        |
-| Nova oferta      | `ti-plus`            |
-| Confirmar troca  | `ti-check`           |
-| Ferramenta/reparo| `ti-tool`            |
-
-### Tamanhos de ícone
-| Contexto          | Tamanho |
-|-------------------|---------|
-| Nav bar           | 20px    |
-| Inline (texto)    | 16px    |
-| Card (ícone solo) | 20px    |
-| Feature icon      | 28px    |
+Sem `box-shadow` decorativa.
 
 ---
 
-## 8. Padrão de Mosaico (Signature Element)
+## 6. Iconografia
 
-O elemento de assinatura da identidade. Aparece em backgrounds de header e splash.
-Inspirado em padrões geométricos afro-brasileiros e azulejos.
+**Não usamos Tabler via CDN.** Ícones inline em `components/icons/Icon.tsx` (SVG 24×24, `currentColor`).
 
-Implementar em SVG inline ou como background-image CSS:
+Nomes usados na nav e features: `home`, `exchange`, `bag`, `speakerphone`, `user`, `message`, `plus`, `map-pin`, `star`, `send`, `arrow-left`, `chevron-right`, `shield` (admin)…
 
-```svg
-<!-- Padrão xadrez orgânico 20x20px, repetível -->
-<svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
-  <rect x="0"  y="0"  width="20" height="20" fill="currentColor" opacity="0.15"/>
-  <rect x="40" y="0"  width="20" height="20" fill="currentColor" opacity="0.15"/>
-  <rect x="20" y="20" width="20" height="20" fill="currentColor" opacity="0.15"/>
-  <rect x="60" y="20" width="20" height="20" fill="currentColor" opacity="0.15"/>
-  <rect x="0"  y="40" width="20" height="20" fill="currentColor" opacity="0.15"/>
-  <rect x="40" y="40" width="20" height="20" fill="currentColor" opacity="0.15"/>
-  <rect x="20" y="60" width="20" height="20" fill="currentColor" opacity="0.15"/>
-  <rect x="60" y="60" width="20" height="20" fill="currentColor" opacity="0.15"/>
-</svg>
-```
+| Contexto | Tamanho |
+|----------|---------|
+| Bottom nav | 20px |
+| TopBar / ações | 16–20px |
+| Dentro de card | 18–20px |
 
-**Como usar:**
-- No splash/header: posicionado no canto superior direito, `opacity: 0.12`, cor `#F5EFE6` (creme sobre terra)
-- Em divisores de seção: versão horizontal, altura 4px, muito sutil
-- Nunca em área de conteúdo principal — é fundo, não foreground
+Sempre `aria-hidden` em ícone decorativo; `aria-label` em botão só-ícone.
 
 ---
 
-## 9. Componentes
+## 7. Grafismos (identidade visual)
 
-### 9.1 Botões
+Composições inspiradas em grafismos indígenas (kusiwa), arquivos em `public/images/`:
 
-#### Primário (CTA principal)
-```
-Background: --color-terra
-Cor do texto: --color-creme
-Border-radius: --radius-md (8px)
-Padding: 10px 20px
-Font: Syne 700, 13px
-Hover: --color-terra-dark
-Active: scale(0.98)
-Sem sombra
-```
+- `caninana-m`, `jabuti-m`, `rio-m`, `samauma-m` (sufixo `-m` = versão para faixa)
 
-#### Secundário / Ghost
-```
-Background: transparent
-Borda: --border-emphasis
-Cor do texto: --color-terra
-Border-radius: --radius-md
-Padding: 10px 20px
-Font: Syne 700, 13px
-Hover: --color-terra-light como background
-```
+Mapeamento por rota em `lib/screenGraphics.ts` (`bandGraphicFor`, `pageGraphicFor`).
 
-#### Destrutivo / Cancelar
-```
-Background: transparent
-Cor do texto: --color-tinta-mid
-Font: IBM Plex Sans 400, 12px
-Sem borda visível
-```
+**Estado atual:** `PageHeader` e `TopBar` usam **faixa sólida `bg-terra`** — o fundo com imagem está preparado na API (`graphic` prop) mas desligado até refinamento visual. Texturas de página podem ser aplicadas em layouts específicos.
 
-#### Estados
-- `disabled`: opacity 0.4, cursor not-allowed
-- `loading`: substitui label por spinner simples (sem libs externas)
+O padrão de mosaico SVG do handoff v0.1 **não está em uso**.
 
 ---
 
-### 9.2 Inputs de Formulário
+## 8. Componentes UI (`components/ui/`)
 
-```
-Background: --color-creme-dark
-Borda: --border-default
-Borda em foco: --border-active
-Border-radius: --radius-md
-Padding: 10px 12px
-Font: IBM Plex Sans 400, 14px
-Cor: --color-tinta
-Placeholder: --color-tinta-light
-Label acima: IBM Plex Sans 500, 10px uppercase, letter-spacing 0.07em, --color-tinta-mid
-Mensagem de erro: IBM Plex Sans 400, 11px, --color-erro, abaixo do campo
-```
+| Componente | Notas |
+|------------|-------|
+| `Button` | `primary` \| `secondary` \| `ghost` \| `dark`; tamanhos `sm` \| `md` \| `lg`; `loading` com `.tk-spinner`; `min-h` 36–48px |
+| `Input`, `Textarea`, `Select` | Label uppercase, borda `palha`, foco `terra`, erro `erro` |
+| `Badge` | Tipos: `novo`, `aviso`, `evento`, `feira`, `troca`, `categoria`, `comunidade` |
+| `Chip` | Filtros horizontais (mural); ativo `bg-terra text-creme` |
+| `Toggle` | Pílula dupla (Oferecem/Buscam); mesmo visual do TerritoryToggle |
+| `Avatar` | Iniciais ou imagem; tamanhos configuráveis |
+| `Card` | Base genérica (pouco usada — cards de feature são custom) |
+| `EmptyState` | Ícone + título + descrição + slot de ação |
+| `Toast` | Feedback de ações (sucesso/erro) |
+| `SectionLabel` | Título de bloco uppercase discreto |
+| `InfoTip` | Tooltip de contexto (ex.: explicação de Trocas) |
 
----
+### Badge — mapeamento de domínio
 
-### 9.3 Cards
-
-#### Card de Feed (serviço / produto / aviso)
-```
-Background: --color-creme-dark
-Borda: --border-default
-Border-radius: --radius-lg
-Padding: 12px
-Display: flex, gap 10px
-Ícone: 32x32px, --color-terra-light background, --radius-md
-Título: --text-h3
-Meta: --text-small, --color-tinta-mid
-Badge: canto direito, --radius-sm
-```
-
-#### Card de Comunidade (seleção de bairro)
-```
-Background: --color-creme-dark
-Borda: --border-default
-Border-radius: --radius-md
-Padding: 10px
-Estado selecionado: borda --border-active, background --color-terra-light
-Avatar: 32x32px, --color-ouro background, --radius-sm
-```
+| type | Visual | Uso |
+|------|--------|-----|
+| `novo` | terra/creme | Destaque, status ativo |
+| `aviso` / `evento` | musgo-light/musgo | Tipos de mural |
+| `feira` / `categoria` | ouro-light/tinta-mid | Produtos, categorias |
+| `troca` | tinta/8% | Oferece/Busca |
+| `comunidade` | creme/15 sobre fundo escuro | Badge no header escuro |
 
 ---
 
-### 9.4 Badges e Tags
+## 9. Componentes de layout
 
-| Tipo       | Background             | Texto              | Border-radius |
-|------------|------------------------|--------------------|---------------|
-| Novo       | `--color-terra`        | `--color-creme`    | `--radius-sm` |
-| Aviso      | `--color-musgo-light`  | `--color-musgo`    | `--radius-sm` |
-| Comunidade | `rgba(creme, 0.15)`    | `--color-creme`    | `--radius-sm` |
-| Categoria  | `--color-ouro-light`   | `--color-tinta-mid`| `--radius-sm` |
+| Componente | Uso |
+|------------|-----|
+| `PageHeader` | Dashboard, perfil — faixa terra, eyebrow, título, badge de comunidade |
+| `TopBar` | Páginas internas — sticky, `back`, ação à direita |
+| `BottomNav` | Mobile — 5 itens (`navItems.ts`) |
+| `RailRow` | Desktop — trilho lateral |
+| `MensagensPanes` | Lista + thread em duas colunas (desktop) |
 
-Font: IBM Plex Sans 500, 9-10px, uppercase, letter-spacing 0.06em
+### Navegação principal
 
----
-
-### 9.5 Header do App (Dashboard)
-
-```
-Background: --color-terra
-Padding: 16px
-Border-radius: 0 0 16px 16px (arredonda só embaixo)
-Padrão mosaico: posição absolute, canto superior direito, opacity 0.10
-Saudação: IBM Plex Sans 400, 11px, rgba(creme, 0.65)
-Nome: Syne 800, 16px, --color-creme
-Badge de comunidade: inline, background rgba(creme, 0.15), borda rgba(creme, 0.3)
-```
+Ordem da roda: **Início** → **Trocas** → **Feira** → **Avisos** → **Perfil**.  
+Mensagens acessadas pelo perfil ou contexto de interesse (não é item da bottom nav).
 
 ---
 
-### 9.6 Bottom Navigation Bar
+## 10. Componentes de feature (padrões visuais)
+
+### Cards de feed
+
+Padrão compartilhado (Trocas, Feira, Mural):
 
 ```
-Background: --color-creme
-Borda top: --border-divider
-Padding: 8px 0
-Ícones: 20px, --color-ouro (inativo), --color-terra (ativo)
-Label: IBM Plex Sans 400, 9px, mesmas cores
-5 itens: Início / Trocas / Feira / Avisos / Perfil
+rounded-lg border border-palha bg-creme-dark p-3|p-4
 ```
+
+- **ServiceCard** — avatar, badge Oferece/Busca, categoria, `InterestButton`
+- **NoticeCard** — badges tipo + `CommunityTag` + autor
+- **FeedCard** — dashboard unificado
+
+### Território
+
+| Componente | Uso |
+|------------|-----|
+| `TerritoryToggle` | Pílula Minha comunidade / Outros territórios |
+| `CommunityTag` | `bg-terra-light text-terra` — origem da publicação |
+| `ScopeSelector` | Alcance ao publicar (own / selected / all) |
+
+### Chat
+
+- Bolha enviada: `bg-terra text-creme`
+- Bolha recebida: `border-palha bg-creme-dark`
+- Pendente: banner + `InterestReplyBar` (Aceitar / Recusar)
+- Header: `ChatHeader` + `RatingSheet` após troca aceita
 
 ---
 
-### 9.7 Divisor de Seção
+## 11. Padrões de layout
 
-```html
-<div style="height: 1px; background: var(--color-palha); opacity: 0.6; margin: 16px 0;"></div>
-```
-
-Ou versão com label de seção:
-```
-Label: IBM Plex Sans 500, 10px, uppercase, --color-tinta-mid, opacity 0.7, margin-bottom 8px
-```
+- Largura de referência: ~390px (mobile); desktop expande com trilho
+- Grid de atalhos no dashboard: `grid-cols-2 gap-2`
+- Feeds: coluna única `flex flex-col gap-3`
+- Safe areas: `env(safe-area-inset-*)` no chat e bottom nav
+- Scroll horizontal de chips: classe `.no-scrollbar`
 
 ---
 
-## 10. Padrões de Layout Mobile
+## 12. Acessibilidade
 
-- **Largura de tela base:** 390px (iPhone 14)
-- **Padding lateral padrão:** 16px (--space-4)
-- **Grid padrão:** 2 colunas com `gap: 8px` para ações principais
-- **Cards em feed:** 1 coluna, full-width
-- **Conteúdo mínimo visível acima da dobra:** saudação + 2 botões de ação + 1 card de feed
+- Contraste AA nos pares principais (tinta sobre creme, creme sobre terra)
+- Alvo mínimo ~44px em botões (`min-h-[44px]` no `Button` md)
+- `:focus-visible` global — outline `2px solid terra`
+- `prefers-reduced-motion` — animações reduzidas em `globals.css`
+- Labels associados em inputs; `aria-pressed` em Chip/Toggle
 
-### Safe areas (para celulares com notch/ilha dinâmica)
-```css
-padding-top: env(safe-area-inset-top);
-padding-bottom: env(safe-area-inset-bottom);
+---
+
+## 13. Implementação para devs
+
+### Tailwind v4
+
+Tokens em `@theme { }` geram utilitários automaticamente. Não duplique `:root` manual — edite `globals.css`.
+
+### Classes mais usadas
+
+```
+bg-creme bg-creme-dark bg-terra bg-terra-light
+text-tinta text-tinta-mid text-tinta-light text-creme
+border-palha border-ouro
+font-display font-strong font-body
+rounded-md rounded-lg rounded-full
 ```
 
----
+### Utilitários globais
 
-## 11. Acessibilidade
+- `.tk-spinner` — loading em botões
+- `.tk-rotate-slow` — decoração hero (anel)
+- `.no-scrollbar` — trilhas horizontais
 
-- Contraste mínimo WCAG AA em todos os pares texto/fundo
-- Área de toque mínima: **44x44px** (especialmente botões e itens de nav)
-- Todo ícone decorativo: `aria-hidden="true"`
-- Ícone funcional sem label visível: `aria-label="..."`
-- Inputs sempre com `<label>` associado via `for`/`id`
-- Foco visível: `outline: 2px solid var(--color-terra)` com `outline-offset: 2px`
-- `prefers-reduced-motion`: desabilitar animações de transição de tela
+### O que não fazer
 
----
-
-## 12. Tokens como CSS Custom Properties
-
-Copiar no `:root` do projeto:
-
-```css
-:root {
-  /* Cores */
-  --color-terra: #B85C2A;
-  --color-terra-dark: #7A3A18;
-  --color-terra-light: #F2E0D0;
-  --color-ouro: #C9A97A;
-  --color-ouro-light: #F0E4CC;
-  --color-musgo: #4A6741;
-  --color-musgo-light: #D6E4D2;
-  --color-tinta: #1C1510;
-  --color-tinta-mid: #4A3D33;
-  --color-tinta-light: #8C7B6E;
-  --color-creme: #F5EFE6;
-  --color-creme-dark: #E8DDCC;
-  --color-palha: #D4C4AE;
-  --color-sucesso: #4A6741;
-  --color-sucesso-light: #D6E4D2;
-  --color-erro: #8B2A1A;
-  --color-erro-light: #F2D5CF;
-
-  /* Tipografia */
-  --font-display: 'Syne', sans-serif;
-  --font-body: 'IBM Plex Sans', sans-serif;
-
-  /* Espaçamento */
-  --space-1: 4px;
-  --space-2: 8px;
-  --space-3: 12px;
-  --space-4: 16px;
-  --space-5: 20px;
-  --space-6: 24px;
-  --space-8: 32px;
-  --space-12: 48px;
-
-  /* Border Radius */
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
-  --radius-xl: 18px;
-  --radius-full: 9999px;
-
-  /* Bordas */
-  --border-default: 1px solid #D4C4AE;
-  --border-emphasis: 1px solid #C9A97A;
-  --border-active: 1.5px solid #B85C2A;
-  --border-divider: 0.5px solid #D4C4AE;
-}
-```
+- Branco `#fff` ou preto `#000` como base
+- Box-shadow decorativa
+- Tabler / emoji como ícone de UI
+- Gradientes genéricos estilo SaaS
+- Border-radius > 18px em cards
+- Azul/roxo fora da paleta
 
 ---
 
-## 13. Google Fonts Import
+## 14. Documentação relacionada
 
-```html
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
-```
+- Layout de telas: [layout-web.md](layout-web.md)
+- Jornada de Trocas: [fluxo-trocas.md](fluxo-trocas.md)
+- Estado do app: [Estado-do-Projeto.md](Estado-do-Projeto.md)
 
 ---
 
-## 14. O Que Não Fazer
-
-- ❌ Branco puro `#FFFFFF` como fundo — usa `--color-creme`
-- ❌ Preto puro `#000000` em texto — usa `--color-tinta`
-- ❌ Box-shadow decorativa — profundidade vem de cor de fundo
-- ❌ Border-radius acima de 18px em cards — fica bolhoso demais
-- ❌ Mais de 2 colunas em mobile
-- ❌ Gradientes — identidade é plana e pigmentada
-- ❌ Emojis como ícones de UI — usar Tabler Icons
-- ❌ Peso 600+ em IBM Plex Sans — fica pesado demais
-- ❌ Cores fora da paleta definida — especialmente azuis e roxos tech
-
----
-
-*Design System Tekoa v0.1 — para revisão antes da implementação*
+*Design System Tekoa v1.0 — sincronizado com o código em produção no repo.*

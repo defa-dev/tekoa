@@ -1,7 +1,6 @@
 # Estado do projeto — Tekoa
 
-Documento de referência do que está **implementado** no repositório (jun/2026).  
-Os pacotes numerados (`Pacote-1` … `Pacote-4`) são o plano original; este arquivo é a fonte da verdade do MVP atual.
+Documento de referência do que está **implementado** no repositório (jun/2026).
 
 ---
 
@@ -103,9 +102,7 @@ Campos de interesse em `chats`: `status` (`pending` \| `active` \| `declined`), 
 
 ## Documentação histórica
 
-Plano inicial e modelagem conceitual: [plano-original/](plano-original/)
-
-Pacotes detalhados (checklists de tarefas — parcialmente desatualizados): `Pacote-1` … `Pacote-4`.
+Plano e tarefas da fase inicial: [plano-original/](plano-original/) (Pacotes 1–4, notas I.*).
 
 ---
 

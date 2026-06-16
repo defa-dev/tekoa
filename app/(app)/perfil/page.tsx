@@ -84,16 +84,6 @@ export default async function PerfilPage() {
               Minhas trocas
               <Icon name="chevron-right" size={18} className="ml-auto text-ouro" />
             </Link>
-            {profile?.is_admin && (
-              <Link
-                href="/admin/comunidades"
-                className="flex items-center gap-3 rounded-md px-3 py-3 font-body text-sm text-tinta transition-colors hover:bg-creme"
-              >
-                <Icon name="shield" size={20} className="text-terra" />
-                Administração
-                <Icon name="chevron-right" size={18} className="ml-auto text-ouro" />
-              </Link>
-            )}
             <LogoutButton />
           </div>
         </div>

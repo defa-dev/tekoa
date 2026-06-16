@@ -10,34 +10,24 @@
 | **[migrations/README.md](../migrations/README.md)** | Scripts SQL numerados |
 | **[ds.md](ds.md)** | Design system (cores, tipografia, componentes) |
 | **[layout-web.md](layout-web.md)** | Layout e telas |
+| **[Resumo-Executivo.md](Resumo-Executivo.md)** | Visão consolidada do MVP |
 
 ---
 
-## Desenvolvimento
+## Referência técnica
 
 | Documento | Conteúdo |
 |-----------|----------|
-| [Pacote-1-Infraestrutura.md](Pacote-1-Infraestrutura.md) | Auth, services, realtime — *plano de referência* |
-| [Pacote-2-Componentes.md](Pacote-2-Componentes.md) | UI e design system — *plano de referência* |
-| [Pacote-3-Trocas-Servicos.md](Pacote-3-Trocas-Servicos.md) | Trocas — *plano + nota do que foi implementado* |
-| [Pacote-4-Feira-Mural.md](Pacote-4-Feira-Mural.md) | Feira e mural — *plano de referência* |
-| [Resumo-Executivo.md](Resumo-Executivo.md) | Visão consolidada e status do MVP |
-
-### Implementação técnica (auth / infra)
-
-- [I.2.2-Hooks-Autenticacao.md](I.2.2-Hooks-Autenticacao.md)
-- [I.2.3-Middleware-Autenticacao.md](I.2.3-Middleware-Autenticacao.md)
-- [I.2.4-Server-Actions-Autenticacao.md](I.2.4-Server-Actions-Autenticacao.md)
-- [I.3.1-Base-Service.md](I.3.1-Base-Service.md)
-- [I.5.3-implementation.md](I.5.3-implementation.md)
-- [nextjs-configuration.md](nextjs-configuration.md)
-- [examples-auth-actions.md](examples-auth-actions.md)
+| [nextjs-configuration.md](nextjs-configuration.md) | `next.config`, TypeScript, aliases |
+| [examples-auth-actions.md](examples-auth-actions.md) | Exemplos de Server Actions de auth |
 
 ---
 
-## Histórico
+## Histórico (plano original)
 
-- [plano-original/](plano-original/) — Plan, Descrição, Dados (fase de concepção)
+Documentação da fase de planejamento — **não reflete o código atual**. Use só se quiser entender decisões iniciais ou tarefas que nunca foram feitas literalmente como descritas.
+
+- [plano-original/](plano-original/) — visão, modelagem, pacotes 1–4, notas de implementação I.*
 
 ---
 

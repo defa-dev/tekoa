@@ -11,6 +11,7 @@ interface AppShellProps {
   children: React.ReactNode
   community: { current?: string | null; communities: MapCommunity[] }
   conversations: Conversations
+  isAdmin?: boolean
 }
 
 /**
@@ -21,12 +22,12 @@ interface AppShellProps {
  * - Desktop (xl+): trilhos laterais — mapa da comunidade à esquerda, conversas
  *   à direita — compondo a página, com o conteúdo (feed) ao centro.
  */
-export function AppShell({ children, community, conversations }: AppShellProps) {
+export function AppShell({ children, community, conversations, isAdmin = false }: AppShellProps) {
   return (
     <div className="relative flex min-h-screen bg-creme">
       <PageBackground />
 
-      <SideNav />
+      <SideNav isAdmin={isAdmin} />
 
       <RailRow
         left={

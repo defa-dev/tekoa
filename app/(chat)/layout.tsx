@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation'
 import { getAuthUser } from '@/lib/auth/session'
+import { getCurrentProfile } from '@/lib/auth/session'
 import { SideNav } from '@/components/layout/SideNav'
 import { PageBackground } from '@/components/layout/PageBackground'
 
@@ -17,10 +18,12 @@ export default async function ChatLayout({
   const user = await getAuthUser()
   if (!user) redirect('/login')
 
+  const profile = await getCurrentProfile()
+
   return (
     <div className="relative flex h-[100svh] bg-creme">
       <PageBackground />
-      <SideNav />
+      <SideNav isAdmin={profile?.is_admin ?? false} />
       <div className="relative z-10 flex min-w-0 flex-1 overflow-hidden">
         <div className="flex min-w-0 flex-1">{children}</div>
       </div>

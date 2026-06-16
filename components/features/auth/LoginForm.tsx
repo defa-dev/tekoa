@@ -7,6 +7,7 @@ import { signIn } from '@/app/auth/actions'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { useToast } from '@/components/ui/Toast'
+import { ForgotPasswordForm } from './ForgotPasswordForm'
 
 export function LoginForm() {
   const router = useRouter()
@@ -17,6 +18,7 @@ export function LoginForm() {
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [showForgotPassword, setShowForgotPassword] = useState(false)
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -35,6 +37,10 @@ export function LoginForm() {
     const redirectTo = params.get('redirect') || '/dashboard'
     router.push(redirectTo)
     router.refresh()
+  }
+
+  if (showForgotPassword) {
+    return <ForgotPasswordForm onBack={() => setShowForgotPassword(false)} />
   }
 
   return (
@@ -71,6 +77,14 @@ export function LoginForm() {
           Entrar
         </Button>
       </form>
+
+      <button
+        type="button"
+        onClick={() => setShowForgotPassword(true)}
+        className="mt-4 text-center font-body text-[13px] text-tinta-mid transition-colors hover:text-terra"
+      >
+        Esqueci minha senha
+      </button>
 
       <p className="mt-6 text-center font-body text-[13px] text-tinta-mid">
         Ainda não faz parte?{' '}

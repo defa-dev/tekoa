@@ -17,11 +17,13 @@ export default async function AppLayout({
   const user = await getAuthUser()
   if (!user) redirect('/login')
 
-  const [profile, communitiesRes, conversations] = await Promise.all([
+  const [profile, communitiesRes, conversationsResult] = await Promise.all([
     getCurrentProfile(),
     getCommunityService().getCommunities(),
-    getConversations(user.id),
+    getConversations(user.id).catch(() => ({ chats: [], userMap: new Map() })),
   ])
+
+  const conversations = conversationsResult || { chats: [], userMap: new Map() }
 
   const communities = communitiesRes.success
     ? (communitiesRes.data ?? []).map((c) => ({
@@ -36,6 +38,7 @@ export default async function AppLayout({
     <AppShell
       community={{ current: profile?.location, communities }}
       conversations={conversations}
+      isAdmin={profile?.is_admin ?? false}
     >
       {children}
     </AppShell>

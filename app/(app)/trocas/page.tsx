@@ -10,15 +10,16 @@ import { InfoTip } from '@/components/ui/InfoTip'
 import { ServiceCard } from '@/components/features/services/ServiceCard'
 import { ServicesBrowser } from '@/components/features/services/ServicesBrowser'
 import { TerritoryToggle } from '@/components/features/territory/TerritoryToggle'
+import { SearchBar } from '@/components/features/search/SearchBar'
 
 export const dynamic = 'force-dynamic'
 
 export default async function TrocasPage({
   searchParams,
 }: {
-  searchParams: Promise<{ territorio?: string }>
+  searchParams: Promise<{ territorio?: string; q?: string }>
 }) {
-  const { territorio } = await searchParams
+  const { territorio, q } = await searchParams
   const all = territorio === 'todos'
   const profile = await getCurrentProfile()
   const svc = getServiceService()
@@ -31,6 +32,7 @@ export default async function TrocasPage({
       limit: 100,
       viewerCommunity: profile?.location,
       allTerritories: all,
+      searchQuery: q,
     }),
   ])
 
@@ -63,7 +65,7 @@ export default async function TrocasPage({
       />
 
       <div className="px-4 py-5">
-        {matches.length > 0 && (
+        {matches.length > 0 && !q && (
           <section className="mb-7">
             <SectionLabel>Combina com você</SectionLabel>
             <div className="flex flex-col gap-3">
@@ -77,6 +79,10 @@ export default async function TrocasPage({
             </div>
           </section>
         )}
+
+        <div className="mb-4">
+          <SearchBar placeholder="Buscar trocas..." />
+        </div>
 
         <div className="mb-3 flex items-center justify-between gap-2">
           <div>

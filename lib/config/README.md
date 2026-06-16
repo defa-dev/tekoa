@@ -99,9 +99,7 @@ This module is used by:
 
 ## Next Steps
 
-After completing I.5.1, the next tasks are:
-- I.5.2 - Structure folder organization
-- I.5.3 - Configure Next.js settings
+Ver também: `docs/nextjs-configuration.md`
 
 ## Status
 

@@ -9,7 +9,7 @@ import { cn } from '@/lib/utils'
 /**
  * Navegação lateral — visível em tablet (só ícones) e desktop (ícones + texto).
  */
-export function SideNav() {
+export function SideNav({ isAdmin = false }: { isAdmin?: boolean }) {
   const pathname = usePathname()
 
   return (
@@ -59,15 +59,35 @@ export function SideNav() {
         })}
       </ul>
 
-      <div className="px-2">
-        <Link
-          href="/perfil"
-          title="Configurações"
-          className="flex min-h-[44px] items-center gap-3 rounded-md px-3 text-tinta-mid hover:bg-creme-dark lg:justify-start justify-center"
+      <div className="border-t border-palha px-2 pt-2">
+        {isAdmin && (
+          <Link
+            href="/admin/comunidades"
+            aria-current={pathname.startsWith('/admin') ? 'page' : undefined}
+            title="Administração"
+            className={cn(
+              'flex min-h-[44px] items-center gap-3 rounded-md px-3 transition-colors lg:justify-start justify-center mb-1',
+              pathname.startsWith('/admin')
+                ? 'bg-terra-light text-terra'
+                : 'text-tinta-mid hover:bg-creme-dark'
+            )}
+          >
+            <Icon
+              name="shield"
+              size={20}
+              className={pathname.startsWith('/admin') ? 'text-terra' : 'text-terra/45'}
+            />
+            <span className="hidden font-body text-sm lg:inline">Admin</span>
+          </Link>
+        )}
+        <button
+          disabled
+          title="Em desenvolvimento"
+          className="flex min-h-[44px] w-full items-center gap-3 rounded-md px-3 text-tinta-mid/50 cursor-not-allowed lg:justify-start justify-center"
         >
-          <Icon name="settings" size={20} className="text-terra/45" />
+          <Icon name="settings" size={20} className="text-terra/25" />
           <span className="hidden font-body text-sm lg:inline">Config</span>
-        </Link>
+        </button>
       </div>
     </nav>
   )

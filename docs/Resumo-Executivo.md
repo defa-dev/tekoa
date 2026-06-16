@@ -52,11 +52,9 @@ Migrações numeradas em [`migrations/`](../migrations/README.md):
 
 ---
 
-## Pacotes 1–4
+## Pacotes 1–4 (arquivados)
 
-Os arquivos `Pacote-*.md` descrevem o **plano de desenvolvimento original** (tarefas granulares, cronograma de 9–13 semanas). Muitas tarefas foram concluídas com caminhos diferentes do plano (ex.: lista em vez de swipe).
-
-Use-os como referência de arquitetura; use **Estado-do-Projeto** para saber o que existe no código.
+Os arquivos `Pacote-*.md` descrevem o plano original em [plano-original/pacotes/](plano-original/pacotes/). Use **Estado-do-Projeto** e **fluxo-trocas** para o comportamento real.
 
 ---
 

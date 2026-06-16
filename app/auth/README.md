@@ -73,4 +73,4 @@ npm test -- app/auth/actions.test.ts
 
 ## 📖 Documentação Completa
 
-Ver: `docs/I.2.4-Server-Actions-Autenticacao.md`
+Ver: `docs/examples-auth-actions.md`

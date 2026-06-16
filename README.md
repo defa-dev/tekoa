@@ -20,7 +20,7 @@ Aplicativo web mobile-first que conecta vizinhos para trocar serviços, vender p
 | [migrations/](migrations/README.md) | Scripts SQL numerados |
 | [Design system](docs/ds.md) | Cores, tipografia, UI |
 
-Os arquivos `Pacote-1` … `Pacote-4` são o **plano original** de tarefas; o estado real do código está em **Estado-do-Projeto**.
+Documentação de planejamento antiga (Pacotes, I.*): [docs/plano-original/](docs/plano-original/) — arquivada.
 
 ## Tech stack
 
