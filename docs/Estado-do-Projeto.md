@@ -31,6 +31,9 @@ Os pacotes numerados (`Pacote-1` … `Pacote-4`) são o plano original; este arq
 - Feeds filtrados por território com toggle “Outros territórios” (Trocas, Feira, Avisos, dashboard)
 
 ### Trocas (carro-chefe)
+
+Jornada completa (publicar, roda, interesse, aceite, chat): **[fluxo-trocas.md](fluxo-trocas.md)**
+
 - Publicar oferta ou pedido (`/trocas/nova`) com categoria e proximidade
 - Roda da comunidade: toggle Oferecem / Buscam (inclui suas publicações)
 - Sugestões **Combina com você** (algoritmo em `lib/matching/match.ts`: categoria oposta + afinidade de texto)

@@ -5,6 +5,7 @@
 | Documento | Para quê |
 |-----------|----------|
 | **[Estado-do-Projeto.md](Estado-do-Projeto.md)** | O que está pronto no código — rotas, fluxos, lacunas |
+| **[fluxo-trocas.md](fluxo-trocas.md)** | Jornada dos usuários nas Trocas (publicar → interesse → chat) |
 | **[Setup-Database.md](Setup-Database.md)** | Configurar Supabase e aplicar migrações |
 | **[migrations/README.md](../migrations/README.md)** | Scripts SQL numerados |
 | **[ds.md](ds.md)** | Design system (cores, tipografia, componentes) |

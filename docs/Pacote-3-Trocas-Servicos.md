@@ -1,6 +1,6 @@
 # Pacote 3: Trocas / Serviços
 
-> **Implementado (jun/2026):** ver [Estado-do-Projeto.md](Estado-do-Projeto.md).  
+> **Implementado (jun/2026):** ver [Estado-do-Projeto.md](Estado-do-Projeto.md) e **[fluxo-trocas.md](fluxo-trocas.md)** (jornada dos usuários).  
 > Resumo: lista + toggle Oferecem/Buscam (não swipe), matching sugerido, interesse com chat `pending` → aceite/recusa → conversa, `/trocas/minhas`. O texto abaixo é o **plano original** de tarefas.
 
 ## Visão Geral

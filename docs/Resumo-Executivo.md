@@ -8,7 +8,8 @@ Plataforma de economia colaborativa para comunidades (favelas, quilombos, aldeia
 
 O protótipo navega de ponta a ponta com Supabase real, testes automatizados e build de produção.
 
-Detalhes por feature, rota e lacuna: **[Estado-do-Projeto.md](Estado-do-Projeto.md)**
+Detalhes por feature, rota e lacuna: **[Estado-do-Projeto.md](Estado-do-Projeto.md)**  
+Jornada das Trocas (passo a passo): **[fluxo-trocas.md](fluxo-trocas.md)**
 
 ---
 

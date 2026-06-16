@@ -14,6 +14,7 @@ Aplicativo web mobile-first que conecta vizinhos para trocar serviços, vender p
 | Documento | Conteúdo |
 |-----------|----------|
 | [Estado do projeto](docs/Estado-do-Projeto.md) | O que está implementado (leia primeiro) |
+| [Fluxo de Trocas](docs/fluxo-trocas.md) | Jornada dos usuários nas trocas |
 | [Índice](docs/Indice.md) | Navegação completa |
 | [Setup do banco](docs/Setup-Database.md) | Supabase e migrações |
 | [migrations/](migrations/README.md) | Scripts SQL numerados |
