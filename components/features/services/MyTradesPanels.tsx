@@ -116,7 +116,7 @@ export function InterestChatRow({
   chatId: string
   name: string
   subtitle: string
-  status: 'pending' | 'active' | 'declined'
+  status: 'pending' | 'active' | 'declined' | 'completed'
   href: string
 }) {
   const statusLabel =
@@ -124,7 +124,16 @@ export function InterestChatRow({
       ? 'Aguardando'
       : status === 'active'
         ? 'Combinada'
-        : 'Recusada'
+        : status === 'completed'
+          ? 'Concluída'
+          : 'Recusada'
+
+  const badgeType =
+    status === 'pending'
+      ? 'feira'
+      : status === 'active'
+        ? 'troca'
+        : 'categoria'
 
   return (
     <Link
@@ -135,9 +144,7 @@ export function InterestChatRow({
         <p className="truncate font-body text-[14px] font-medium text-tinta">{name}</p>
         <p className="truncate font-body text-[12px] text-tinta-mid">{subtitle}</p>
       </div>
-      <Badge type={status === 'pending' ? 'feira' : status === 'active' ? 'troca' : 'categoria'}>
-        {statusLabel}
-      </Badge>
+      <Badge type={badgeType}>{statusLabel}</Badge>
     </Link>
   )
 }

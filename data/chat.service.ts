@@ -428,12 +428,12 @@ export class ChatService extends BaseService<Chat> {
       const chatResult = await this.findById(chatId)
       if (!options?.bypassStatusGuard && chatResult.success && chatResult.data?.service_id) {
         const chat = chatResult.data
-        if (chat.status === 'declined') {
+        if (chat.status === 'declined' || chat.status === 'completed') {
           return {
             success: false,
             error: {
-              message: 'Este interesse foi encerrado',
-              code: 'CHAT_DECLINED',
+              message: 'Esta conversa foi encerrada',
+              code: 'CHAT_CLOSED',
             },
           }
         }

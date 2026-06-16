@@ -61,9 +61,12 @@ export default async function DashboardPage() {
       createdAt: s.created_at,
       icon: 'exchange' as const,
       title: s.title,
-      meta: `${s.type === 'offer' ? 'Oferece' : 'Busca'} · ${timeAgo(s.created_at)}`,
+      meta: timeAgo(s.created_at),
       href: `/trocas`,
-      badge: { label: 'Troca', type: 'troca' as const },
+      badge:
+        s.type === 'offer'
+          ? ({ label: 'Oferece', type: 'troca' as const })
+          : ({ label: 'Busca', type: 'aviso' as const }),
     })),
     ...products.map((p) => ({
       key: `p-${p.id}`,

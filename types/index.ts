@@ -80,7 +80,7 @@ export type MuralPost = {
   user?: User
 }
 
-export type ChatStatus = 'pending' | 'active' | 'declined'
+export type ChatStatus = 'pending' | 'active' | 'declined' | 'completed'
 
 export type Chat = {
   id: string

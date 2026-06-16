@@ -45,12 +45,16 @@ export default async function ChatThreadPage({
 
   // Contexto da conversa (serviço ou produto)
   let subtitle: string | undefined
+  let serviceType: 'offer' | 'request' | undefined
   if (chat.service_id) {
     const s = await getServiceService().getServiceById(chat.service_id)
-    if (s.success && s.data) subtitle = `Sobre: ${s.data.title}`
+    if (s.success && s.data) {
+      subtitle = s.data.title
+      serviceType = s.data.type
+    }
   } else if (chat.product_id) {
     const p = await getProductService().getProductById(chat.product_id)
-    if (p.success && p.data) subtitle = `Sobre: ${p.data.title}`
+    if (p.success && p.data) subtitle = p.data.title
   }
 
   return (
@@ -68,6 +72,8 @@ export default async function ChatThreadPage({
             name={other?.full_name || 'Vizinho(a)'}
             avatarUrl={other?.avatar_url}
             subtitle={subtitle}
+            serviceType={serviceType}
+            chatStatus={chat.status ?? 'active'}
             otherUserId={otherId}
             serviceId={chat.status === 'active' ? chat.service_id : null}
           />
@@ -78,6 +84,8 @@ export default async function ChatThreadPage({
             chatStatus={chat.status ?? 'active'}
             initiatedBy={chat.initiated_by}
             serviceId={chat.service_id}
+            otherUserId={otherId}
+            otherUserName={other?.full_name || 'Vizinho(a)'}
           />
         </>
       }

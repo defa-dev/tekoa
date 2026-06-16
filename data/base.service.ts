@@ -35,9 +35,10 @@ export abstract class BaseService<T = any> {
    * Deve ser chamado antes de qualquer operação
    */
   protected async init(): Promise<void> {
-    if (!this.supabase) {
-      this.supabase = await createClient()
-    }
+    // Sempre cria um cliente fresco — o singleton de instância causava
+    // reutilização do cookieStore de uma requisição anterior, quebrando
+    // auth.uid() nas RLS policies em requisições subsequentes.
+    this.supabase = await createClient()
   }
 
   /**

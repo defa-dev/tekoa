@@ -105,6 +105,24 @@ export const ICON_PATHS = {
       <path d="M12 8h.01" />
     </>
   ),
+  'check-circle': (
+    <>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M9 12l2 2l4 -4" />
+    </>
+  ),
+  'minus-circle': (
+    <>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M9 12h6" />
+    </>
+  ),
+  'x-circle': (
+    <>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M9.5 9.5l5 5M14.5 9.5l-5 5" />
+    </>
+  ),
 } as const
 
 export type IconName = keyof typeof ICON_PATHS

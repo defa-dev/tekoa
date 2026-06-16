@@ -1,7 +1,10 @@
 'use client'
 
 import { useEffect, useRef, useState, useCallback } from 'react'
+import { useRouter } from 'next/navigation'
 import { InterestReplyBar } from '@/components/features/chat/InterestReplyBar'
+import { TradeCloseSheet } from '@/components/features/chat/TradeCloseSheet'
+import { RatingSheet } from '@/components/features/ratings/RatingSheet'
 import { Icon } from '@/components/icons/Icon'
 import { cn } from '@/lib/utils'
 import type { ChatStatus } from '@/types'
@@ -14,11 +17,10 @@ interface ChatThreadProps {
   chatStatus?: ChatStatus
   initiatedBy?: string | null
   serviceId?: string | null
+  otherUserId?: string | null
+  otherUserName?: string
 }
 
-/**
- * Conversa em tempo real. Respeita o fluxo de interesse pendente em trocas.
- */
 export function ChatThread({
   chatId,
   currentUserId,
@@ -26,7 +28,10 @@ export function ChatThread({
   chatStatus = 'active',
   initiatedBy,
   serviceId,
+  otherUserId,
+  otherUserName = 'Vizinho(a)',
 }: ChatThreadProps) {
+  const router = useRouter()
   const [messages, setMessages] = useState<Message[]>(initialMessages)
   const [text, setText] = useState('')
   const [sending, setSending] = useState(false)
@@ -35,25 +40,14 @@ export function ChatThread({
   const isServiceChat = !!serviceId
   const isPending = isServiceChat && chatStatus === 'pending'
   const isDeclined = isServiceChat && chatStatus === 'declined'
+  const isCompleted = chatStatus === 'completed'
   const isInitiator = initiatedBy === currentUserId
   const isOwnerPending = isPending && !isInitiator
-  const canCompose = !isDeclined && !isPending
+  const canCompose = !isDeclined && !isPending && !isCompleted
 
   function appendUnique(msg: Message) {
     setMessages((prev) => (prev.some((m) => m.id === msg.id) ? prev : [...prev, msg]))
   }
-
-  const pollMessages = useCallback(async () => {
-    try {
-      const res = await fetch(`/api/messages/${chatId}`)
-      if (res.ok) {
-        const data = await res.json()
-        setMessages(data)
-      }
-    } catch (err) {
-      console.error('[ChatThread] Error polling messages:', err)
-    }
-  }, [chatId])
 
   const markChatRead = useCallback(async () => {
     try {
@@ -67,11 +61,20 @@ export function ChatThread({
     endRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
 
-  // Polling: refetch mensagens a cada 2 segundos
+  // SSE: recebe novas mensagens em tempo real
   useEffect(() => {
-    const interval = setInterval(pollMessages, 2000)
-    return () => clearInterval(interval)
-  }, [pollMessages])
+    const es = new EventSource(`/api/messages/${chatId}/stream`)
+    es.onmessage = (event) => {
+      try {
+        const message = JSON.parse(event.data) as Message
+        appendUnique(message)
+      } catch {
+        // ignora eventos mal-formados
+      }
+    }
+    es.onerror = () => es.close()
+    return () => es.close()
+  }, [chatId])
 
   // Marcar como lido ao entrar
   useEffect(() => {
@@ -127,6 +130,24 @@ export function ChatThread({
         </div>
       )}
 
+      {isCompleted && (
+        <div className="border-b border-palha bg-creme-dark px-4 py-2.5">
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex items-center gap-1.5 text-tinta-mid">
+              <Icon name="check-circle" size={14} className="shrink-0 text-musgo" />
+              <p className="font-body text-[12px]">Troca encerrada.</p>
+            </div>
+            {otherUserId && (
+              <RatingSheet
+                toUserId={otherUserId}
+                toUserName={otherUserName}
+                serviceId={serviceId}
+              />
+            )}
+          </div>
+        </div>
+      )}
+
       <div className="flex-1 space-y-2 overflow-y-auto px-4 py-4">
         {messages.map((m) => {
           const mine = m.sender_id === currentUserId
@@ -152,6 +173,18 @@ export function ChatThread({
       </div>
 
       {isOwnerPending && <InterestReplyBar chatId={chatId} />}
+
+      {isServiceChat && chatStatus === 'active' && serviceId && otherUserId && (
+        <div className="flex justify-center border-t border-palha/50 bg-creme px-4 py-2">
+          <TradeCloseSheet
+            chatId={chatId}
+            serviceId={serviceId}
+            otherUserId={otherUserId}
+            otherUserName={otherUserName}
+            onDone={() => router.refresh()}
+          />
+        </div>
+      )}
 
       {canCompose && (
         <form

@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { getServiceService } from '@/data/service.service'
 import { getChatService } from '@/data/chat.service'
 import { getAuthUser, getCurrentProfile } from '@/lib/auth/session'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { buildInterestIntro } from '@/lib/services/interest-intro'
 import type { ServiceResult } from '@/data/types'
 
@@ -117,6 +118,12 @@ export async function acceptServiceInterestAction(
     return { success: false, error: updated.error?.message || 'Erro ao aceitar' }
   }
 
+  // Serviço vai para 'matched': não aparece mais para novos interessados
+  await createAdminClient()
+    .from('services')
+    .update({ status: 'matched' })
+    .eq('id', chat.service_id)
+
   const profile = await getCurrentProfile()
   const name = profile?.full_name?.split(' ')[0] || 'Eu'
   await chatSvc.sendMessage(
@@ -127,6 +134,7 @@ export async function acceptServiceInterestAction(
 
   revalidatePath(`/mensagens/${chatId}`)
   revalidatePath('/mensagens')
+  revalidatePath('/trocas')
   revalidatePath('/trocas/minhas')
   return { success: true, data: null }
 }

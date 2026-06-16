@@ -229,7 +229,7 @@ export interface Database {
           product_id: string | null
           participant_1: string
           participant_2: string
-          status: 'pending' | 'active' | 'declined'
+          status: 'pending' | 'active' | 'declined' | 'completed'
           initiated_by: string | null
           offerer_service_id: string | null
           last_message: string | null
@@ -243,7 +243,7 @@ export interface Database {
           product_id?: string | null
           participant_1: string
           participant_2: string
-          status?: 'pending' | 'active' | 'declined'
+          status?: 'pending' | 'active' | 'declined' | 'completed'
           initiated_by?: string | null
           offerer_service_id?: string | null
           last_message?: string | null
@@ -257,7 +257,7 @@ export interface Database {
           product_id?: string | null
           participant_1?: string
           participant_2?: string
-          status?: 'pending' | 'active' | 'declined'
+          status?: 'pending' | 'active' | 'declined' | 'completed'
           initiated_by?: string | null
           offerer_service_id?: string | null
           last_message?: string | null
