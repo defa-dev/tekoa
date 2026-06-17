@@ -3,7 +3,6 @@
 import { useRouter } from 'next/navigation'
 import { Avatar } from '@/components/ui/Avatar'
 import { Icon } from '@/components/icons/Icon'
-import { RatingSheet } from '@/components/features/ratings/RatingSheet'
 import { cn } from '@/lib/utils'
 import type { ChatStatus } from '@/types'
 
@@ -77,11 +76,6 @@ export function ChatHeader({
         )}
       </div>
 
-      <RatingSheet
-        toUserId={otherUserId}
-        toUserName={name}
-        serviceId={serviceId}
-      />
     </header>
   )
 }

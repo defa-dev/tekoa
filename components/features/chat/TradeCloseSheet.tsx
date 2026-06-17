@@ -1,7 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { closeTradeAction, type TradeOutcome } from '@/app/(chat)/mensagens/[id]/close-actions'
+import type { TradeOutcome } from '@/types'
+import { closeTradeAction } from '@/app/(chat)/mensagens/[id]/close-actions'
 import { rateUserAction } from '@/app/(chat)/mensagens/[id]/rating-actions'
 import { StarRating } from '@/components/features/ratings/StarRating'
 import { Button } from '@/components/ui/Button'

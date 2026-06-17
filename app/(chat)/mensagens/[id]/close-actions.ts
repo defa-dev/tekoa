@@ -7,8 +7,6 @@ import { getAuthUser, getCurrentProfile } from '@/lib/auth/session'
 import { createAdminClient } from '@/lib/supabase/admin'
 import type { TradeOutcome } from '@/types'
 
-export type { TradeOutcome }
-
 type ActionResult = { success: true } | { success: false; error: string }
 
 /**

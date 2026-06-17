@@ -4,7 +4,6 @@ import { useEffect, useRef, useState, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { InterestReplyBar } from '@/components/features/chat/InterestReplyBar'
 import { TradeCloseSheet } from '@/components/features/chat/TradeCloseSheet'
-import { RatingSheet } from '@/components/features/ratings/RatingSheet'
 import { Icon } from '@/components/icons/Icon'
 import { cn } from '@/lib/utils'
 import type { ChatStatus } from '@/types'
@@ -132,18 +131,9 @@ export function ChatThread({
 
       {isCompleted && (
         <div className="border-b border-palha bg-creme-dark px-4 py-2.5">
-          <div className="flex items-center justify-between gap-3">
-            <div className="flex items-center gap-1.5 text-tinta-mid">
-              <Icon name="check-circle" size={14} className="shrink-0 text-musgo" />
-              <p className="font-body text-[12px]">Troca encerrada.</p>
-            </div>
-            {otherUserId && (
-              <RatingSheet
-                toUserId={otherUserId}
-                toUserName={otherUserName}
-                serviceId={serviceId}
-              />
-            )}
+          <div className="flex items-center gap-1.5 text-tinta-mid">
+            <Icon name="check-circle" size={14} className="shrink-0 text-musgo" />
+            <p className="font-body text-[12px]">Troca encerrada.</p>
           </div>
         </div>
       )}

@@ -252,7 +252,7 @@ describe('ChatThread', () => {
       expect(screen.queryByPlaceholderText('Escreva uma mensagem...')).not.toBeInTheDocument()
     })
 
-    it('exibe botão Avaliar no banner de troca encerrada', () => {
+    it('não exibe botão Avaliar no banner de troca encerrada', () => {
       render(
         <ChatThread
           chatId="chat-1"
@@ -264,7 +264,7 @@ describe('ChatThread', () => {
           otherUserName="Maria"
         />
       )
-      expect(screen.getByText('Avaliar')).toBeInTheDocument()
+      expect(screen.queryByText('Avaliar')).not.toBeInTheDocument()
     })
   })
 })
