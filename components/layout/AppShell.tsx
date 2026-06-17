@@ -23,11 +23,13 @@ interface AppShellProps {
  *   à direita — compondo a página, com o conteúdo (feed) ao centro.
  */
 export function AppShell({ children, community, conversations, isAdmin = false }: AppShellProps) {
+  const unreadMessages = conversations.chats.reduce((sum, c) => sum + (c.unreadCount ?? 0), 0)
+
   return (
     <div className="relative flex min-h-screen bg-creme">
       <PageBackground />
 
-      <SideNav isAdmin={isAdmin} />
+      <SideNav isAdmin={isAdmin} unreadMessages={unreadMessages} />
 
       <RailRow
         left={
@@ -49,7 +51,7 @@ export function AppShell({ children, community, conversations, isAdmin = false }
         </main>
       </RailRow>
 
-      <BottomNav />
+      <BottomNav unreadMessages={unreadMessages} />
     </div>
   )
 }

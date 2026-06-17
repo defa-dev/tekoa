@@ -3,6 +3,7 @@ import { getAuthUser } from '@/lib/auth/session'
 import { getCurrentProfile } from '@/lib/auth/session'
 import { SideNav } from '@/components/layout/SideNav'
 import { PageBackground } from '@/components/layout/PageBackground'
+import { NotificationWatcher } from '@/components/features/notifications/NotificationWatcher'
 
 /**
  * Layout das mensagens.
@@ -24,6 +25,7 @@ export default async function ChatLayout({
     <div className="relative flex h-[100svh] bg-creme">
       <PageBackground />
       <SideNav isAdmin={profile?.is_admin ?? false} />
+      <NotificationWatcher userId={user.id} />
       <div className="relative z-10 flex min-w-0 flex-1 overflow-hidden">
         <div className="flex min-w-0 flex-1">{children}</div>
       </div>

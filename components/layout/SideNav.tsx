@@ -9,7 +9,7 @@ import { cn } from '@/lib/utils'
 /**
  * Navegação lateral — visível em tablet (só ícones) e desktop (ícones + texto).
  */
-export function SideNav({ isAdmin = false }: { isAdmin?: boolean }) {
+export function SideNav({ isAdmin = false, unreadMessages = 0 }: { isAdmin?: boolean; unreadMessages?: number }) {
   const pathname = usePathname()
 
   return (
@@ -32,6 +32,7 @@ export function SideNav({ isAdmin = false }: { isAdmin?: boolean }) {
       <ul className="flex flex-1 flex-col gap-1 px-2">
         {NAV_ITEMS.map((item) => {
           const active = isNavItemActive(item.href, pathname)
+          const showBadge = item.href === '/mensagens' && unreadMessages > 0
           return (
             <li key={item.href}>
               <Link
@@ -45,11 +46,18 @@ export function SideNav({ isAdmin = false }: { isAdmin?: boolean }) {
                     : 'text-tinta-mid hover:bg-creme-dark'
                 )}
               >
-                <Icon
-                  name={item.icon}
-                  size={20}
-                  className={active ? 'text-terra' : 'text-terra/45'}
-                />
+                <span className="relative shrink-0">
+                  <Icon
+                    name={item.icon}
+                    size={20}
+                    className={active ? 'text-terra' : 'text-terra/45'}
+                  />
+                  {showBadge && (
+                    <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-terra text-[9px] font-bold text-creme">
+                      {unreadMessages > 9 ? '9+' : unreadMessages}
+                    </span>
+                  )}
+                </span>
                 <span className="hidden font-body text-sm lg:inline">
                   {item.label}
                 </span>

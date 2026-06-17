@@ -7,15 +7,26 @@ export interface NavItem {
 }
 
 /**
- * Itens de navegação principal. Compartilhados entre bottom nav (mobile)
- * e side nav (tablet/desktop). Ordem reflete a jornada da roda:
- * chegar (início) → trocar → feira → avisos → eu (perfil).
+ * Itens de navegação — SideNav (tablet/desktop): inclui Avisos e Mensagens.
  */
 export const NAV_ITEMS: NavItem[] = [
   { href: '/dashboard', label: 'Início', icon: 'home' },
   { href: '/trocas', label: 'Trocas', icon: 'exchange' },
   { href: '/feira', label: 'Feira', icon: 'bag' },
   { href: '/avisos', label: 'Avisos', icon: 'speakerphone' },
+  { href: '/mensagens', label: 'Mensagens', icon: 'message' },
+  { href: '/perfil', label: 'Perfil', icon: 'user' },
+]
+
+/**
+ * Itens de navegação — BottomNav (mobile): 5 slots fixos.
+ * Avisos fica disponível via SideNav no tablet/desktop.
+ */
+export const BOTTOM_NAV_ITEMS: NavItem[] = [
+  { href: '/dashboard', label: 'Início', icon: 'home' },
+  { href: '/trocas', label: 'Trocas', icon: 'exchange' },
+  { href: '/feira', label: 'Feira', icon: 'bag' },
+  { href: '/mensagens', label: 'Msgs', icon: 'message' },
   { href: '/perfil', label: 'Perfil', icon: 'user' },
 ]
 
