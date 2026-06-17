@@ -24,6 +24,7 @@ describe('ChatService', () => {
     offerer_service_id: null,
     last_message: 'Olá!',
     last_message_at: '2024-01-01T00:00:00Z',
+    last_sender_id: null,
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z',
   }

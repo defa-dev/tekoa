@@ -77,9 +77,14 @@ export async function startProductChatAction(
   if (!chatRes.success) {
     return { success: false, error: chatRes.error?.message || 'Erro ao abrir conversa' }
   }
-  const { chat, existing } = chatRes.data!
+  const { chat } = chatRes.data!
 
-  if (!existing) {
+  // Manda a intro se a conversa ainda não tem nenhuma mensagem — cobre tanto
+  // o chat recém-criado quanto um chat antigo que nunca recebeu a automática.
+  const messagesRes = await getChatService().getMessages(chat.id, user.id, 1, 0)
+  const hasMessages = messagesRes.success && (messagesRes.data?.length ?? 0) > 0
+
+  if (!hasMessages) {
     const intro = buildNegotiateIntro(prod.data!.title, productId)
     await getChatService().sendMessage(chat.id, user.id, intro, { bypassStatusGuard: true })
   }

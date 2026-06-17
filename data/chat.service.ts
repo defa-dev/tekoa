@@ -502,14 +502,9 @@ export class ChatService extends BaseService<Chat> {
         return this.handleError(messageError)
       }
 
-      // Atualizar last_message do chat
-      const updateData: Partial<Chat> = {
-        last_message: content.trim(),
-        last_message_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      }
-
-      await this.update(chatId, updateData, { partial: true, skipValidation: true })
+      // last_message/last_message_at/last_sender_id em chats são mantidos
+      // pelo trigger on_message_created — cobre qualquer caminho que insira
+      // em messages, não só este service.
 
       return {
         success: true,

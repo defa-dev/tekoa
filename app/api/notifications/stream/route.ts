@@ -20,8 +20,20 @@ export async function GET(req: Request) {
 
       const admin = createAdminClient()
 
-      const handleChange = (payload: { eventType: string; new: Record<string, unknown> }) => {
-        send({ type: payload.eventType, chat: payload.new })
+      // Enriquece com o tipo do serviço (offer/request) — o front usa isso
+      // pra diferenciar "novo interesse na oferta" de "alguém pra sua busca".
+      const handleChange = async (payload: { eventType: string; new: Record<string, unknown> }) => {
+        const chat = payload.new
+        let serviceType: 'offer' | 'request' | null = null
+        if (chat.service_id) {
+          const { data } = await admin
+            .from('services')
+            .select('type')
+            .eq('id', chat.service_id as string)
+            .single()
+          serviceType = (data?.type as 'offer' | 'request' | undefined) ?? null
+        }
+        send({ type: payload.eventType, chat, serviceType })
       }
 
       // Two channels — user can be in either participant column

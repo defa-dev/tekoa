@@ -234,6 +234,7 @@ export interface Database {
           offerer_service_id: string | null
           last_message: string | null
           last_message_at: string | null
+          last_sender_id: string | null
           created_at: string
           updated_at: string
         }
@@ -248,6 +249,7 @@ export interface Database {
           offerer_service_id?: string | null
           last_message?: string | null
           last_message_at?: string | null
+          last_sender_id?: string | null
           created_at?: string
           updated_at?: string
         }
@@ -262,6 +264,7 @@ export interface Database {
           offerer_service_id?: string | null
           last_message?: string | null
           last_message_at?: string | null
+          last_sender_id?: string | null
           created_at?: string
           updated_at?: string
         }
