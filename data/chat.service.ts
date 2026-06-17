@@ -75,13 +75,15 @@ export class ChatService extends BaseService<Chat> {
   /**
    * Cria um novo chat entre dois usuários (feira / produto).
    * Reaproveita conversa existente entre os mesmos participantes.
+   * `existing` indica se a conversa retornada já existia (útil pra evitar
+   * reenviar a mensagem automática de abertura).
    */
   public async createChat(
     participant1: string,
     participant2: string,
     serviceId?: string | null,
     productId?: string | null
-  ): Promise<ServiceResult<Chat>> {
+  ): Promise<ServiceResult<{ chat: Chat; existing: boolean }>> {
     try {
       const client = await this.ensureClient()
 
@@ -98,7 +100,7 @@ export class ChatService extends BaseService<Chat> {
 
         if (searchError) return this.handleError(searchError)
         if (existingChats?.length) {
-          return { success: true, data: existingChats[0] as Chat }
+          return { success: true, data: { chat: existingChats[0] as Chat, existing: true } }
         }
       }
 
@@ -110,7 +112,9 @@ export class ChatService extends BaseService<Chat> {
         status: 'active',
       }
 
-      return this.create(insertData)
+      const created = await this.create(insertData)
+      if (!created.success) return { success: false, error: created.error }
+      return { success: true, data: { chat: created.data!, existing: false } }
     } catch (error) {
       return this.handleError(error)
     }

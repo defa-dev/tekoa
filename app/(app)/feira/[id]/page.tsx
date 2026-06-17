@@ -39,7 +39,9 @@ export default async function ProductDetailPage({
     <>
       <TopBar title="Produto" back />
 
-      <ProductGallery images={product.images} title={product.title} />
+      <div className="mt-3">
+        <ProductGallery images={product.images} title={product.title} />
+      </div>
 
       <div className="px-4 py-4">
         <div className="flex items-start justify-between gap-3">

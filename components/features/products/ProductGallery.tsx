@@ -18,7 +18,7 @@ export function ProductGallery({
 
   if (list.length === 0) {
     return (
-      <div className="flex aspect-square w-full items-center justify-center bg-ouro-light font-body text-ouro">
+      <div className="flex aspect-square max-h-[420px] w-full items-center justify-center overflow-hidden bg-ouro-light font-body text-ouro">
         sem foto
       </div>
     )
@@ -26,7 +26,7 @@ export function ProductGallery({
 
   return (
     <div>
-      <div className="aspect-square w-full bg-ouro-light">
+      <div className="aspect-square max-h-[420px] w-full overflow-hidden bg-ouro-light">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={list[active]}

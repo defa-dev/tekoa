@@ -62,6 +62,22 @@ export function formatBRL(value: number): string {
 }
 
 /**
+ * Máscara de dinheiro estilo "centavos digitados": cada dígito novo entra
+ * pela direita, formatando como BRL (ex.: digitar "1234" exibe "12,34").
+ * Retorna o texto a exibir no input e o valor numérico em reais.
+ */
+export function maskCurrencyInput(raw: string): { display: string; value: number } {
+  const digits = raw.replace(/\D/g, '')
+  const cents = digits === '' ? 0 : parseInt(digits, 10)
+  const value = cents / 100
+  const display =
+    digits === ''
+      ? ''
+      : value.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+  return { display, value }
+}
+
+/**
  * Gera um identificador único razoável para o ambiente do protótipo.
  */
 export function uid(prefix = 'id'): string {

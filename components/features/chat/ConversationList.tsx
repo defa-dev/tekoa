@@ -3,6 +3,7 @@ import { Avatar } from '@/components/ui/Avatar'
 import { EmptyState } from '@/components/ui/EmptyState'
 import { SectionLabel } from '@/components/ui/SectionLabel'
 import { timeAgo, cn } from '@/lib/utils'
+import { stripMessageLinks } from '@/lib/chat/renderMessageContent'
 import type { Conversations } from '@/lib/chat/getConversations'
 
 interface ConversationListProps extends Conversations {
@@ -26,8 +27,11 @@ export function ConversationList({
     )
   }
 
-  const open = chats.filter((c) => c.status !== 'completed')
-  const closed = chats.filter((c) => c.status === 'completed')
+  const isClosed = (status: string | null | undefined) =>
+    status === 'completed' || status === 'declined'
+
+  const open = chats.filter((c) => !isClosed(c.status))
+  const closed = chats.filter((c) => isClosed(c.status))
 
   return (
     <div>
@@ -95,9 +99,10 @@ function ConversationRow({
     statusHint = 'Encerrada'
   }
 
+  const lastMessage = chat.last_message ? stripMessageLinks(chat.last_message) : null
   const preview = statusHint
-    ? `${statusHint} · ${chat.last_message || 'Conversa iniciada'}`
-    : chat.last_message || 'Conversa iniciada'
+    ? `${statusHint} · ${lastMessage || 'Conversa iniciada'}`
+    : lastMessage || 'Conversa iniciada'
 
   return (
     <li>

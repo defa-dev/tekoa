@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { InterestReplyBar } from '@/components/features/chat/InterestReplyBar'
 import { TradeCloseSheet } from '@/components/features/chat/TradeCloseSheet'
 import { Icon } from '@/components/icons/Icon'
+import { renderMessageContent } from '@/lib/chat/renderMessageContent'
 import { cn } from '@/lib/utils'
 import type { ChatStatus } from '@/types'
 import type { Message } from '@/types'
@@ -154,7 +155,7 @@ export function ChatThread({
                     : 'rounded-bl-sm border border-palha bg-creme-dark text-tinta'
                 )}
               >
-                {m.content}
+                {renderMessageContent(m.content)}
               </div>
             </div>
           )

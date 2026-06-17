@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { cn, timeAgo, formatBRL, uid } from './utils'
+import { cn, timeAgo, formatBRL, maskCurrencyInput, uid } from './utils'
 
 describe('cn', () => {
   it('junta classes simples', () => {
@@ -54,6 +54,25 @@ describe('formatBRL', () => {
 
   it('inclui centavos', () => {
     expect(formatBRL(12.5)).toContain('12,50')
+  })
+})
+
+describe('maskCurrencyInput', () => {
+  it('formata dígitos como centavos', () => {
+    expect(maskCurrencyInput('1234')).toEqual({ display: '12,34', value: 12.34 })
+  })
+
+  it('ignora caracteres não numéricos', () => {
+    expect(maskCurrencyInput('R$ 1.234,56')).toEqual({ display: '1.234,56', value: 1234.56 })
+  })
+
+  it('retorna vazio quando não há dígitos', () => {
+    expect(maskCurrencyInput('')).toEqual({ display: '', value: 0 })
+    expect(maskCurrencyInput('abc')).toEqual({ display: '', value: 0 })
+  })
+
+  it('lida com um único dígito', () => {
+    expect(maskCurrencyInput('5')).toEqual({ display: '0,05', value: 0.05 })
   })
 })
 

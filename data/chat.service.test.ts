@@ -97,7 +97,9 @@ describe('ChatService', () => {
       const result = await service.createChat('user-1', 'user-2')
 
       expect(result.success).toBe(true)
-      expect(result.data).toEqual(mockChat)
+      if (!result.success) return
+      expect(result.data!.chat).toEqual(mockChat)
+      expect(result.data!.existing).toBe(false)
     })
 
     it('deve reaproveitar chat de produto existente', async () => {
@@ -122,7 +124,9 @@ describe('ChatService', () => {
       const result = await service.createChat('user-1', 'user-2', null, 'prod-1')
 
       expect(result.success).toBe(true)
-      expect(result.data).toEqual(productChat)
+      if (!result.success) return
+      expect(result.data!.chat).toEqual(productChat)
+      expect(result.data!.existing).toBe(true)
     })
   })
 

@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { getProductService, type CreateProductData } from '@/data/product.service'
 import { getChatService } from '@/data/chat.service'
 import { getAuthUser, getCurrentProfile } from '@/lib/auth/session'
+import { buildNegotiateIntro } from '@/lib/products/negotiate-intro'
 
 type ActionResult<T = unknown> =
   | { success: true; data: T }
@@ -72,11 +73,17 @@ export async function startProductChatAction(
     return { success: false, error: 'Este produto é seu' }
   }
 
-  const chat = await getChatService().createChat(user.id, ownerId, null, productId)
-  if (!chat.success) {
-    return { success: false, error: chat.error?.message || 'Erro ao abrir conversa' }
+  const chatRes = await getChatService().createChat(user.id, ownerId, null, productId)
+  if (!chatRes.success) {
+    return { success: false, error: chatRes.error?.message || 'Erro ao abrir conversa' }
+  }
+  const { chat, existing } = chatRes.data!
+
+  if (!existing) {
+    const intro = buildNegotiateIntro(prod.data!.title, productId)
+    await getChatService().sendMessage(chat.id, user.id, intro, { bypassStatusGuard: true })
   }
 
   revalidatePath('/mensagens')
-  return { success: true, data: { chatId: chat.data!.id } }
+  return { success: true, data: { chatId: chat.id } }
 }

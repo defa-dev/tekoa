@@ -11,6 +11,7 @@ import { Select } from '@/components/ui/Select'
 import { useToast } from '@/components/ui/Toast'
 import { ScopeSelector } from '@/components/features/territory/ScopeSelector'
 import { PRODUCT_CATEGORIES } from '@/lib/categories'
+import { maskCurrencyInput } from '@/lib/utils'
 import type { Reach } from '@/lib/territories'
 
 const CONDITIONS = [
@@ -35,7 +36,8 @@ export function NewProductForm({
   const [images, setImages] = useState<string[]>([])
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
-  const [price, setPrice] = useState('')
+  const [priceDisplay, setPriceDisplay] = useState('')
+  const [priceValue, setPriceValue] = useState(0)
   const [category, setCategory] = useState(PRODUCT_CATEGORIES[0].value)
   const [condition, setCondition] = useState('good')
   const [reach, setReach] = useState<Reach>(userCommunity ? 'own' : 'all')
@@ -59,8 +61,7 @@ export function NewProductForm({
       setError('Descreva o produto com ao menos 20 caracteres.')
       return
     }
-    const priceNum = Number(price.replace(',', '.'))
-    if (!priceNum || priceNum <= 0) {
+    if (!priceValue || priceValue <= 0) {
       setError('Informe um preço válido.')
       return
     }
@@ -69,7 +70,7 @@ export function NewProductForm({
     const res = await createProductAction({
       title: title.trim(),
       description: description.trim(),
-      price: priceNum,
+      price: priceValue,
       category,
       condition: condition as 'new' | 'like_new' | 'good' | 'fair',
       images,
@@ -119,10 +120,14 @@ export function NewProductForm({
       <div className="grid grid-cols-2 gap-3">
         <Input
           label="Preço (R$)"
-          inputMode="decimal"
+          inputMode="numeric"
           placeholder="0,00"
-          value={price}
-          onChange={(e) => setPrice(e.target.value)}
+          value={priceDisplay}
+          onChange={(e) => {
+            const { display, value } = maskCurrencyInput(e.target.value)
+            setPriceDisplay(display)
+            setPriceValue(value)
+          }}
           required
         />
         <Select
