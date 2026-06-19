@@ -9,16 +9,27 @@ import { Icon } from '@/components/icons/Icon'
 import { useToast } from '@/components/ui/Toast'
 
 interface RatingSheetProps {
+  chatId?: string
   toUserId: string
   toUserName: string
   serviceId?: string | null
+  productId?: string | null
+  onDone?: () => void
 }
 
 /**
  * Botão "Avaliar troca" que abre uma folha inferior com estrelas + comentário.
- * Fecha a roda da reciprocidade: depois da troca, registra-se a confiança.
+ * Fecha a roda da reciprocidade: depois da troca, registra-se a confiança
+ * (e credita Tekoin a quem é avaliado).
  */
-export function RatingSheet({ toUserId, toUserName, serviceId }: RatingSheetProps) {
+export function RatingSheet({
+  chatId,
+  toUserId,
+  toUserName,
+  serviceId,
+  productId,
+  onDone,
+}: RatingSheetProps) {
   const { toast } = useToast()
   const [open, setOpen] = useState(false)
   const [rating, setRating] = useState(5)
@@ -27,7 +38,7 @@ export function RatingSheet({ toUserId, toUserName, serviceId }: RatingSheetProp
 
   async function handleSubmit() {
     setLoading(true)
-    const res = await rateUserAction({ toUserId, rating, comment, serviceId })
+    const res = await rateUserAction({ chatId, toUserId, rating, comment, serviceId, productId })
     setLoading(false)
     if (!res.success) {
       toast(res.error, 'erro')
@@ -35,6 +46,7 @@ export function RatingSheet({ toUserId, toUserName, serviceId }: RatingSheetProp
     }
     toast('Avaliação registrada. Obrigado!', 'sucesso')
     setOpen(false)
+    onDone?.()
   }
 
   return (

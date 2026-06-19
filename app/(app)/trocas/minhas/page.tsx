@@ -4,6 +4,7 @@ import { getCurrentProfile } from '@/lib/auth/session'
 import { getServiceService } from '@/data/service.service'
 import { getChatService } from '@/data/chat.service'
 import { getUserService } from '@/data/user.service'
+import { getMutiraoService } from '@/data/mutirao.service'
 import { TopBar } from '@/components/layout/TopBar'
 import { SectionLabel } from '@/components/ui/SectionLabel'
 import { Button } from '@/components/ui/Button'
@@ -13,6 +14,7 @@ import {
   MyServiceRow,
   InterestChatRow,
 } from '@/components/features/services/MyTradesPanels'
+import { MutiraoCard } from '@/components/features/mutiroes/MutiraoCard'
 
 export const dynamic = 'force-dynamic'
 
@@ -22,6 +24,7 @@ export default async function MinhasTrocasPage() {
 
   const svc = getServiceService()
   const chatSvc = getChatService()
+  const mutiraoSvc = getMutiraoService()
 
   const servicesRes = await svc.getUserServices(profile.id)
   const services = servicesRes.success ? servicesRes.data ?? [] : []
@@ -64,14 +67,26 @@ export default async function MinhasTrocasPage() {
     (usersRes.success ? usersRes.data ?? [] : []).map((u) => [u.id, u])
   )
 
-  const serviceMap = new Map(services.map((s) => [s.id, s]))
-
   const pendingByService = received.reduce<Record<string, number>>((acc, chat) => {
     if (chat.status === 'pending' && chat.service_id) {
       acc[chat.service_id] = (acc[chat.service_id] || 0) + 1
     }
     return acc
   }, {})
+
+  const [organizedRes, confirmedRes] = await Promise.all([
+    mutiraoSvc.listOrganizedBy(profile.id),
+    mutiraoSvc.listConfirmedBy(profile.id),
+  ])
+  const organized = organizedRes.success ? organizedRes.data ?? [] : []
+  const confirmed = confirmedRes.success ? confirmedRes.data ?? [] : []
+  const myMutiroes = [...organized, ...confirmed]
+  const mutiraoCounts = await Promise.all(
+    myMutiroes.map((m) => mutiraoSvc.getConfirmationCount(m.id))
+  )
+  const mutiraoCountById = new Map(
+    myMutiroes.map((m, i) => [m.id, mutiraoCounts[i].success ? mutiraoCounts[i].data ?? 0 : 0])
+  )
 
   return (
     <>
@@ -113,6 +128,20 @@ export default async function MinhasTrocasPage() {
             </div>
           )}
         </section>
+
+        {(organized.length > 0 || confirmed.length > 0) && (
+          <section>
+            <SectionLabel>Meus mutirões</SectionLabel>
+            <div className="mt-3 flex flex-col gap-3">
+              {organized.map((m) => (
+                <MutiraoCard key={m.id} mutirao={m} confirmationCount={mutiraoCountById.get(m.id) ?? 0} />
+              ))}
+              {confirmed.map((m) => (
+                <MutiraoCard key={m.id} mutirao={m} confirmationCount={mutiraoCountById.get(m.id) ?? 0} />
+              ))}
+            </div>
+          </section>
+        )}
 
         <section>
           <SectionLabel>Interesses recebidos</SectionLabel>

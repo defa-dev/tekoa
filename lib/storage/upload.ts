@@ -18,7 +18,7 @@ export interface UploadResult {
  * exige que a primeira pasta do caminho seja o id do dono.
  */
 export async function uploadImages(
-  bucket: 'products' | 'mural' | 'avatars',
+  bucket: 'products' | 'mural' | 'avatars' | 'blog',
   userId: string,
   files: File[]
 ): Promise<UploadResult> {

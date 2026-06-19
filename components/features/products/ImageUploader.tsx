@@ -6,7 +6,7 @@ import { Icon } from '@/components/icons/Icon'
 import { cn } from '@/lib/utils'
 
 interface ImageUploaderProps {
-  bucket: 'products' | 'mural'
+  bucket: 'products' | 'mural' | 'blog'
   userId: string
   max?: number
   value: string[]

@@ -7,13 +7,14 @@ export interface NavItem {
 }
 
 /**
- * Itens de navegação — SideNav (tablet/desktop): inclui Avisos e Mensagens.
+ * Itens de navegação — SideNav (tablet/desktop): inclui Avisos, Blog e Mensagens.
  */
 export const NAV_ITEMS: NavItem[] = [
   { href: '/dashboard', label: 'Início', icon: 'home' },
   { href: '/trocas', label: 'Trocas', icon: 'exchange' },
   { href: '/feira', label: 'Feira', icon: 'bag' },
   { href: '/avisos', label: 'Avisos', icon: 'speakerphone' },
+  { href: '/blog', label: 'Blog', icon: 'book' },
   { href: '/mensagens', label: 'Mensagens', icon: 'message' },
   { href: '/perfil', label: 'Perfil', icon: 'user' },
 ]
@@ -28,6 +29,15 @@ export const BOTTOM_NAV_ITEMS: NavItem[] = [
   { href: '/feira', label: 'Feira', icon: 'bag' },
   { href: '/mensagens', label: 'Msgs', icon: 'message' },
   { href: '/perfil', label: 'Perfil', icon: 'user' },
+]
+
+/**
+ * Itens secundários — abertos pelo botão flutuante "Mais" no mobile.
+ * Cresce aqui conforme novos temas surgirem, sem disputar espaço no rodapé.
+ */
+export const MORE_NAV_ITEMS: NavItem[] = [
+  { href: '/avisos', label: 'Avisos', icon: 'speakerphone' },
+  { href: '/blog', label: 'Blog', icon: 'book' },
 ]
 
 /**

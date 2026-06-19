@@ -10,13 +10,16 @@ export default async function NovaTrocaPage() {
     getCurrentProfile(),
     getCommunityService().getCommunities(),
   ])
-  const communities = (res.success ? res.data ?? [] : []).map((c) => c.name)
+  const allCommunities = res.success ? res.data ?? [] : []
+  const communities = allCommunities.map((c) => c.name)
+  const formalCommunities = allCommunities.map((c) => ({ id: c.id, name: c.name }))
 
   return (
     <>
       <TopBar title="Nova troca" back />
       <NewServiceForm
         communities={communities}
+        formalCommunities={formalCommunities}
         userCommunity={profile?.location}
       />
     </>

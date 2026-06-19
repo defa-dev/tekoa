@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { getCurrentProfile } from '@/lib/auth/session'
 import { getServiceService } from '@/data/service.service'
+import { getMutiraoService } from '@/data/mutirao.service'
 import { findMatches } from '@/lib/matching/match'
 import { TopBar } from '@/components/layout/TopBar'
 import { SectionLabel } from '@/components/ui/SectionLabel'
@@ -8,7 +9,7 @@ import { Button } from '@/components/ui/Button'
 import { Icon } from '@/components/icons/Icon'
 import { InfoTip } from '@/components/ui/InfoTip'
 import { ServiceCard } from '@/components/features/services/ServiceCard'
-import { ServicesBrowser } from '@/components/features/services/ServicesBrowser'
+import { ServicesBrowser, type MutiraoListItem } from '@/components/features/services/ServicesBrowser'
 import { TerritoryToggle } from '@/components/features/territory/TerritoryToggle'
 import { SearchBar } from '@/components/features/search/SearchBar'
 
@@ -23,8 +24,9 @@ export default async function TrocasPage({
   const all = territorio === 'todos'
   const profile = await getCurrentProfile()
   const svc = getServiceService()
+  const mutiraoSvc = getMutiraoService()
 
-  const [mineRes, communityRes] = await Promise.all([
+  const [mineRes, communityRes, mutiroesRes] = await Promise.all([
     profile
       ? svc.getUserServices(profile.id, 'active')
       : Promise.resolve({ success: true as const, data: [] }),
@@ -34,10 +36,21 @@ export default async function TrocasPage({
       allTerritories: all,
       searchQuery: q,
     }),
+    q
+      ? Promise.resolve({ success: true as const, data: [] })
+      : mutiraoSvc.listOpenMutiroes({ viewerCommunity: profile?.location, allTerritories: all }),
   ])
 
   const mine = mineRes.success ? mineRes.data ?? [] : []
   const community = communityRes.success ? communityRes.data ?? [] : []
+  const openMutiroes = mutiroesRes.success ? mutiroesRes.data ?? [] : []
+
+  const mutiroes: MutiraoListItem[] = await Promise.all(
+    openMutiroes.map(async (mutirao) => {
+      const countRes = await mutiraoSvc.getConfirmationCount(mutirao.id)
+      return { mutirao, confirmationCount: countRes.success ? countRes.data ?? 0 : 0 }
+    })
+  )
 
   const matches = findMatches(mine, community).slice(0, 8)
 
@@ -99,7 +112,7 @@ export default async function TrocasPage({
           </div>
           <TerritoryToggle path="/trocas" all={all} community={profile?.location} />
         </div>
-        <ServicesBrowser services={community} currentUserId={profile?.id} />
+        <ServicesBrowser services={community} mutiroes={mutiroes} currentUserId={profile?.id} />
       </div>
     </>
   )

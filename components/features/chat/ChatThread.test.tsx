@@ -15,7 +15,9 @@ vi.mock('@/components/features/ratings/RatingSheet', () => ({
 }))
 
 vi.mock('@/components/features/chat/TradeCloseSheet', () => ({
-  TradeCloseSheet: () => <button type="button">Encerrar troca</button>,
+  TradeCloseSheet: ({ productId }: { productId?: string | null }) => (
+    <button type="button">{productId ? 'Encerrar negociação' : 'Encerrar troca'}</button>
+  ),
 }))
 
 // Mock EventSource
@@ -265,6 +267,37 @@ describe('ChatThread', () => {
         />
       )
       expect(screen.queryByText('Avaliar')).not.toBeInTheDocument()
+    })
+
+    it('exibe botão "Encerrar negociação" em chat active de produto', () => {
+      render(
+        <ChatThread
+          chatId="chat-1"
+          currentUserId="user-1"
+          initialMessages={mockMessages}
+          chatStatus="active"
+          productId="prod-1"
+          otherUserId="user-2"
+          otherUserName="Maria"
+        />
+      )
+      expect(screen.getByText('Encerrar negociação')).toBeInTheDocument()
+      expect(screen.queryByText('Encerrar troca')).not.toBeInTheDocument()
+    })
+
+    it('exibe banner de negociação encerrada quando chat de produto está completed', () => {
+      render(
+        <ChatThread
+          chatId="chat-1"
+          currentUserId="user-1"
+          initialMessages={mockMessages}
+          chatStatus="completed"
+          productId="prod-1"
+          otherUserId="user-2"
+          otherUserName="Maria"
+        />
+      )
+      expect(screen.getByText(/Negociação encerrada/)).toBeInTheDocument()
     })
   })
 })

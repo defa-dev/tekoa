@@ -2,6 +2,7 @@ import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { getCurrentProfile } from '@/lib/auth/session'
 import { Icon } from '@/components/icons/Icon'
+import { AdminNavTabs } from '@/components/layout/AdminNavTabs'
 
 export const dynamic = 'force-dynamic'
 
@@ -31,6 +32,7 @@ export default async function AdminLayout({
           <Icon name="shield" size={18} />
           <h1 className="font-display text-[18px] font-bold">Administração</h1>
         </div>
+        <AdminNavTabs />
       </header>
       <main className="mx-auto max-w-3xl px-4 py-6">{children}</main>
     </div>

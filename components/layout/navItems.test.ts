@@ -1,13 +1,14 @@
 import { describe, it, expect } from 'vitest'
-import { NAV_ITEMS, BOTTOM_NAV_ITEMS, isNavItemActive } from './navItems'
+import { NAV_ITEMS, BOTTOM_NAV_ITEMS, MORE_NAV_ITEMS, isNavItemActive } from './navItems'
 
 describe('NAV_ITEMS', () => {
-  it('tem os 6 itens do SideNav na ordem certa', () => {
+  it('tem os 7 itens do SideNav na ordem certa', () => {
     expect(NAV_ITEMS.map((i) => i.href)).toEqual([
       '/dashboard',
       '/trocas',
       '/feira',
       '/avisos',
+      '/blog',
       '/mensagens',
       '/perfil',
     ])
@@ -23,6 +24,12 @@ describe('BOTTOM_NAV_ITEMS', () => {
       '/mensagens',
       '/perfil',
     ])
+  })
+})
+
+describe('MORE_NAV_ITEMS', () => {
+  it('contém Avisos e Blog, disponíveis pelo botão flutuante no mobile', () => {
+    expect(MORE_NAV_ITEMS.map((i) => i.href)).toEqual(['/avisos', '/blog'])
   })
 })
 

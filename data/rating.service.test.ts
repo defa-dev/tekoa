@@ -17,6 +17,7 @@ describe('RatingService', () => {
     from_user_id: 'user-1',
     to_user_id: 'user-2',
     service_id: 'service-123',
+    product_id: null,
     rating: 5,
     comment: 'Excelente serviço!',
     created_at: '2024-01-01T00:00:00Z',
@@ -182,6 +183,70 @@ describe('RatingService', () => {
         to_user_id: 'user-2',
         rating: 5,
         service_id: 'service-123',
+      })
+
+      expect(result.success).toBe(false)
+      expect(result.error?.code).toBe('ALREADY_RATED')
+    })
+
+    it('deve criar avaliação de negociação de produto', async () => {
+      const { createClient } = await import('@/lib/supabase/server')
+      const productRating = { ...mockRating, service_id: null, product_id: 'prod-123' }
+
+      const mockClient = {
+        from: vi.fn().mockImplementation((table: string) => {
+          if (table === 'ratings') {
+            return {
+              select: vi.fn().mockReturnValue({
+                eq: vi.fn().mockReturnValue({
+                  eq: vi.fn().mockReturnValue({
+                    limit: vi.fn().mockResolvedValue({ data: [], error: null }),
+                  }),
+                }),
+              }),
+              insert: vi.fn().mockReturnValue({
+                select: vi.fn().mockReturnValue({
+                  single: vi.fn().mockResolvedValue({ data: productRating, error: null }),
+                }),
+              }),
+            }
+          }
+          if (table === 'users') {
+            return { update: vi.fn().mockReturnValue({ eq: vi.fn().mockResolvedValue({ error: null }) }) }
+          }
+        }),
+      }
+      vi.mocked(createClient).mockResolvedValue(mockClient as any)
+
+      const result = await service.createRating('user-1', {
+        to_user_id: 'user-2',
+        rating: 4,
+        product_id: 'prod-123',
+      })
+
+      expect(result.success).toBe(true)
+      expect(result.data).toEqual(productRating)
+    })
+
+    it('deve rejeitar avaliação duplicada de produto', async () => {
+      const { createClient } = await import('@/lib/supabase/server')
+
+      vi.mocked(createClient).mockResolvedValue({
+        from: vi.fn().mockReturnValue({
+          select: vi.fn().mockReturnValue({
+            eq: vi.fn().mockReturnValue({
+              eq: vi.fn().mockReturnValue({
+                limit: vi.fn().mockResolvedValue({ data: [{ id: 'existing' }], error: null }),
+              }),
+            }),
+          }),
+        }),
+      } as any)
+
+      const result = await service.createRating('user-1', {
+        to_user_id: 'user-2',
+        rating: 4,
+        product_id: 'prod-123',
       })
 
       expect(result.success).toBe(false)

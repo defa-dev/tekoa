@@ -301,6 +301,7 @@ export interface Database {
           from_user_id: string
           to_user_id: string
           service_id: string | null
+          product_id: string | null
           rating: number
           comment: string | null
           created_at: string
@@ -310,6 +311,7 @@ export interface Database {
           from_user_id: string
           to_user_id: string
           service_id?: string | null
+          product_id?: string | null
           rating: number
           comment?: string | null
           created_at?: string
@@ -319,6 +321,7 @@ export interface Database {
           from_user_id?: string
           to_user_id?: string
           service_id?: string | null
+          product_id?: string | null
           rating?: number
           comment?: string | null
           created_at?: string
@@ -329,6 +332,7 @@ export interface Database {
           id: string
           chat_id: string
           service_id: string | null
+          product_id: string | null
           participant_1: string
           participant_2: string
           closed_by: string
@@ -339,6 +343,7 @@ export interface Database {
           id?: string
           chat_id: string
           service_id?: string | null
+          product_id?: string | null
           participant_1: string
           participant_2: string
           closed_by: string
@@ -349,6 +354,7 @@ export interface Database {
           id?: string
           chat_id?: string
           service_id?: string | null
+          product_id?: string | null
           participant_1?: string
           participant_2?: string
           closed_by?: string

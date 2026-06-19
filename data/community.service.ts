@@ -3,7 +3,9 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import type { ServiceResult } from './types'
 import type { Database } from '@/types/database.types'
 
-type Community = Database['public']['Tables']['communities']['Row']
+// `created_by` ainda não está no tipo gerado (migration 015 não rodou /
+// types não regenerados) — intersection até `database.types.ts` ser atualizado.
+type Community = Database['public']['Tables']['communities']['Row'] & { created_by: string | null }
 type CommunityInsert = Database['public']['Tables']['communities']['Insert']
 
 export interface CommunityInput {
@@ -13,6 +15,7 @@ export interface CommunityInput {
   kind?: string | null
   lat?: number | null
   lng?: number | null
+  created_by?: string | null
 }
 
 /**
@@ -77,14 +80,15 @@ export class CommunityService extends BaseService<Community> {
 
     try {
       const db = createAdminClient()
-      const insert: CommunityInsert = {
+      const insert = {
         name: input.name.trim(),
         description: input.description?.trim() || null,
         address: input.address?.trim() || null,
         kind: input.kind || null,
         lat: input.lat ?? null,
         lng: input.lng ?? null,
-      }
+        created_by: input.created_by ?? null,
+      } as CommunityInsert
       const { data, error } = await db
         .from('communities')
         .insert(insert)

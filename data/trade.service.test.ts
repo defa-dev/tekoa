@@ -11,6 +11,7 @@ const mockTrade = {
   id: 'trade-1',
   chat_id: 'chat-1',
   service_id: 'svc-1',
+  product_id: null,
   participant_1: 'user-1',
   participant_2: 'user-2',
   closed_by: 'user-1',
@@ -61,6 +62,27 @@ describe('TradeService.createTrade', () => {
     expect(res.data!.outcome).toBe('completed')
     expect(chain.insert).toHaveBeenCalledWith(
       expect.objectContaining({ outcome: 'completed', chat_id: 'chat-1' })
+    )
+  })
+
+  it('insere com product_id quando é negociação de produto', async () => {
+    const productTrade = { ...mockTrade, service_id: null, product_id: 'prod-1' }
+    const chain = makeChain({ data: productTrade, error: null })
+    mockAdmin(chain)
+
+    const svc = new TradeService()
+    const res = await svc.createTrade({
+      chat_id: 'chat-1',
+      product_id: 'prod-1',
+      participant_1: 'user-1',
+      participant_2: 'user-2',
+      closed_by: 'user-1',
+      outcome: 'completed',
+    })
+
+    expect(res.success).toBe(true)
+    expect(chain.insert).toHaveBeenCalledWith(
+      expect.objectContaining({ product_id: 'prod-1', service_id: null })
     )
   })
 

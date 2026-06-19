@@ -1,9 +1,12 @@
 import { BaseService } from './base.service'
 import { territoryOrFilter } from '@/lib/territories'
+import { getTekoinService } from './tekoin.service'
 import type { ServiceResult, BaseFilters, PaginatedResult } from './types'
 import type { Database } from '@/types/database.types'
 
-type Product = Database['public']['Tables']['products']['Row']
+// `accepts_tekoins` ainda não está no tipo gerado (migration 013 não rodou /
+// types não regenerados) — intersection até `database.types.ts` ser atualizado.
+type Product = Database['public']['Tables']['products']['Row'] & { accepts_tekoins: boolean }
 type ProductInsert = Database['public']['Tables']['products']['Insert']
 type ProductUpdate = Database['public']['Tables']['products']['Update']
 
@@ -37,6 +40,7 @@ export interface CreateProductData {
   community?: string | null
   reach?: string
   reach_communities?: string[]
+  accepts_tekoins?: boolean
 }
 
 /** Autor resumido anexado a um produto. */
@@ -184,7 +188,9 @@ export class ProductService extends BaseService<Product> {
     productData: CreateProductData
   ): Promise<ServiceResult<Product>> {
     try {
-      const insertData: ProductInsert = {
+      // `accepts_tekoins` ainda não está em ProductInsert (gerado antes da
+      // migration 013) — cast explícito até `database.types.ts` ser regenerado.
+      const insertData = {
         user_id: userId,
         title: productData.title,
         description: productData.description,
@@ -197,7 +203,8 @@ export class ProductService extends BaseService<Product> {
         community: productData.community ?? null,
         reach: productData.reach ?? 'own',
         reach_communities: productData.reach_communities ?? [],
-      }
+        accepts_tekoins: productData.accepts_tekoins ?? false,
+      } as ProductInsert
 
       return this.create(insertData)
     } catch (error) {
@@ -337,7 +344,8 @@ export class ProductService extends BaseService<Product> {
       const { data, error } = await query
       if (error) return this.handleError(error)
 
-      return { success: true, data: (data || []) as unknown as ProductWithUser[] }
+      const products = (data || []) as unknown as ProductWithUser[]
+      return { success: true, data: await getTekoinService().sortByActiveBoost(products, 'product_id') }
     } catch (error) {
       return this.handleError(error)
     }

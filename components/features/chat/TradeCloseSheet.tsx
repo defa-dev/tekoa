@@ -11,14 +11,16 @@ import { Icon } from '@/components/icons/Icon'
 import { useToast } from '@/components/ui/Toast'
 import { cn } from '@/lib/utils'
 
-const OUTCOMES: {
+interface OutcomeOption {
   value: TradeOutcome
   label: string
   sub: string
   icon: 'check-circle' | 'minus-circle' | 'x-circle'
   selected: string
   idle: string
-}[] = [
+}
+
+const TROCA_OUTCOMES: OutcomeOption[] = [
   {
     value: 'completed',
     label: 'Deu tudo certo!',
@@ -45,9 +47,30 @@ const OUTCOMES: {
   },
 ]
 
+const PRODUTO_OUTCOMES: OutcomeOption[] = [
+  {
+    value: 'completed',
+    label: 'Vendido!',
+    sub: 'A negociação aconteceu e o produto foi vendido.',
+    icon: 'check-circle',
+    selected: 'border-musgo bg-musgo-light text-musgo',
+    idle: 'border-palha bg-creme-dark text-tinta hover:border-musgo hover:bg-musgo-light/30',
+  },
+  {
+    value: 'cancelled',
+    label: 'Não rolou',
+    sub: 'A negociação não aconteceu. O produto continua na feira.',
+    icon: 'x-circle',
+    selected: 'border-terra bg-terra-light text-terra',
+    idle: 'border-palha bg-creme-dark text-tinta hover:border-terra hover:bg-terra-light/30',
+  },
+]
+
 interface TradeCloseSheetProps {
   chatId: string
-  serviceId: string
+  serviceId?: string | null
+  productId?: string | null
+  productAcceptsTekoins?: boolean
   otherUserId: string
   otherUserName: string
   onDone: () => void
@@ -56,23 +79,33 @@ interface TradeCloseSheetProps {
 export function TradeCloseSheet({
   chatId,
   serviceId,
+  productId,
+  productAcceptsTekoins = false,
   otherUserId,
   otherUserName,
   onDone,
 }: TradeCloseSheetProps) {
+  const isProduct = !!productId
+  const outcomes = isProduct ? PRODUTO_OUTCOMES : TROCA_OUTCOMES
+  const actionLabel = isProduct ? 'Encerrar negociação' : 'Encerrar troca'
+  const titleLabel = isProduct ? 'Como foi a negociação?' : 'Como foi a troca?'
+
   const { toast } = useToast()
   const [open, setOpen] = useState(false)
   const [outcome, setOutcome] = useState<TradeOutcome | null>(null)
   const [rating, setRating] = useState(0)
   const [comment, setComment] = useState('')
+  const [tekoinsOffered, setTekoinsOffered] = useState('')
   const [loading, setLoading] = useState(false)
 
   const canSubmit = outcome !== null && rating > 0
+  const showTekoinField = isProduct && productAcceptsTekoins && outcome === 'completed'
 
   function handleOpen() {
     setOutcome(null)
     setRating(0)
     setComment('')
+    setTekoinsOffered('')
     setOpen(true)
   }
 
@@ -80,19 +113,36 @@ export function TradeCloseSheet({
     if (!canSubmit) return
     setLoading(true)
 
-    const closeRes = await closeTradeAction(chatId, outcome)
+    const closeRes = await closeTradeAction(
+      chatId,
+      outcome,
+      showTekoinField ? Number(tekoinsOffered) || undefined : undefined
+    )
     if (!closeRes.success) {
       toast(closeRes.error, 'erro')
       setLoading(false)
       return
     }
 
-    const rateRes = await rateUserAction({ toUserId: otherUserId, rating, comment, serviceId })
+    const rateRes = await rateUserAction({
+      chatId,
+      toUserId: otherUserId,
+      rating,
+      comment,
+      serviceId,
+      productId,
+    })
     if (!rateRes.success) {
-      // Troca já foi encerrada — avisa mas não bloqueia
-      toast('Troca encerrada, mas a avaliação não foi salva. Tente avaliar depois.', 'erro')
+      // Já foi encerrado — avisa mas não bloqueia
+      toast(
+        `${isProduct ? 'Negociação encerrada' : 'Troca encerrada'}, mas a avaliação não foi salva. Tente avaliar depois.`,
+        'erro'
+      )
     } else {
-      toast('Troca encerrada e avaliação registrada!', 'sucesso')
+      toast(
+        `${isProduct ? 'Negociação encerrada' : 'Troca encerrada'} e avaliação registrada!`,
+        'sucesso'
+      )
     }
 
     setLoading(false)
@@ -107,7 +157,7 @@ export function TradeCloseSheet({
         onClick={handleOpen}
         className="font-body text-[12px] text-tinta-mid underline-offset-2 hover:text-terra hover:underline"
       >
-        Encerrar troca
+        {actionLabel}
       </button>
 
       {open && (
@@ -123,7 +173,7 @@ export function TradeCloseSheet({
             {/* Header */}
             <div className="mb-5 flex items-center justify-between">
               <h2 className="font-display text-[18px] font-bold text-tinta">
-                Como foi a troca?
+                {titleLabel}
               </h2>
               <button
                 type="button"
@@ -137,7 +187,7 @@ export function TradeCloseSheet({
 
             {/* Desfecho */}
             <div className="space-y-2">
-              {OUTCOMES.map((opt) => (
+              {outcomes.map((opt) => (
                 <button
                   key={opt.value}
                   type="button"
@@ -155,6 +205,24 @@ export function TradeCloseSheet({
                 </button>
               ))}
             </div>
+
+            {/* Pagamento em Tekoins (opcional, só produto vendido) */}
+            {showTekoinField && (
+              <div className="mt-4">
+                <label className="mb-1 block font-body text-[13px] font-medium text-tinta">
+                  Tekoins recebidos do comprador (opcional)
+                </label>
+                <input
+                  type="number"
+                  min={0}
+                  inputMode="numeric"
+                  placeholder="0"
+                  value={tekoinsOffered}
+                  onChange={(e) => setTekoinsOffered(e.target.value)}
+                  className="w-full rounded-md border border-palha bg-creme-dark px-3 py-2 font-body text-sm text-tinta focus:border-terra focus:outline-none"
+                />
+              </div>
+            )}
 
             {/* Avaliação */}
             <div className="mt-5">
@@ -192,7 +260,7 @@ export function TradeCloseSheet({
                 disabled={!canSubmit}
                 onClick={handleSubmit}
               >
-                Encerrar troca
+                {actionLabel}
               </Button>
               {!canSubmit && (
                 <p className="mt-2 text-center font-body text-[11px] text-tinta-light">

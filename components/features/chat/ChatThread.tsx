@@ -17,6 +17,8 @@ interface ChatThreadProps {
   chatStatus?: ChatStatus
   initiatedBy?: string | null
   serviceId?: string | null
+  productId?: string | null
+  productAcceptsTekoins?: boolean
   otherUserId?: string | null
   otherUserName?: string
 }
@@ -28,6 +30,8 @@ export function ChatThread({
   chatStatus = 'active',
   initiatedBy,
   serviceId,
+  productId,
+  productAcceptsTekoins = false,
   otherUserId,
   otherUserName = 'Vizinho(a)',
 }: ChatThreadProps) {
@@ -38,6 +42,7 @@ export function ChatThread({
   const endRef = useRef<HTMLDivElement>(null)
 
   const isServiceChat = !!serviceId
+  const isProductChat = !!productId
   const isPending = isServiceChat && chatStatus === 'pending'
   const isDeclined = isServiceChat && chatStatus === 'declined'
   const isCompleted = chatStatus === 'completed'
@@ -134,7 +139,9 @@ export function ChatThread({
         <div className="border-b border-palha bg-creme-dark px-4 py-2.5">
           <div className="flex items-center gap-1.5 text-tinta-mid">
             <Icon name="check-circle" size={14} className="shrink-0 text-musgo" />
-            <p className="font-body text-[12px]">Troca encerrada.</p>
+            <p className="font-body text-[12px]">
+              {isProductChat ? 'Negociação encerrada.' : 'Troca encerrada.'}
+            </p>
           </div>
         </div>
       )}
@@ -165,11 +172,13 @@ export function ChatThread({
 
       {isOwnerPending && <InterestReplyBar chatId={chatId} />}
 
-      {isServiceChat && chatStatus === 'active' && serviceId && otherUserId && (
+      {(isServiceChat || isProductChat) && chatStatus === 'active' && otherUserId && (
         <div className="flex justify-center border-t border-palha/50 bg-creme px-4 py-2">
           <TradeCloseSheet
             chatId={chatId}
             serviceId={serviceId}
+            productId={productId}
+            productAcceptsTekoins={productAcceptsTekoins}
             otherUserId={otherUserId}
             otherUserName={otherUserName}
             onDone={() => router.refresh()}

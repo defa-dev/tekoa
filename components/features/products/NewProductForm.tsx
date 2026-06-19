@@ -42,6 +42,7 @@ export function NewProductForm({
   const [condition, setCondition] = useState('good')
   const [reach, setReach] = useState<Reach>(userCommunity ? 'own' : 'all')
   const [selected, setSelected] = useState<string[]>([])
+  const [acceptsTekoins, setAcceptsTekoins] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -76,6 +77,7 @@ export function NewProductForm({
       images,
       reach,
       reach_communities: reach === 'selected' ? selected : [],
+      accepts_tekoins: acceptsTekoins,
     })
 
     if (!res.success) {
@@ -153,6 +155,18 @@ export function NewProductForm({
         communities={communities}
         userCommunity={userCommunity}
       />
+
+      <label className="flex items-center gap-2 rounded-lg border border-palha bg-creme-dark px-3 py-3">
+        <input
+          type="checkbox"
+          checked={acceptsTekoins}
+          onChange={(e) => setAcceptsTekoins(e.target.checked)}
+          className="h-4 w-4 accent-terra"
+        />
+        <span className="font-body text-[13px] text-tinta">
+          Aceito Tekoins como parte do pagamento
+        </span>
+      </label>
 
       {error && <p className="font-body text-[12px] text-erro">{error}</p>}
 

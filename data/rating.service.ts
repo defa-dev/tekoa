@@ -14,6 +14,7 @@ export interface CreateRatingData {
   rating: number
   comment?: string | null
   service_id?: string | null
+  product_id?: string | null
 }
 
 /**
@@ -156,12 +157,35 @@ export class RatingService extends BaseService<Rating> {
         }
       }
 
+      // Verificar se já existe uma avaliação para este produto
+      if (ratingData.product_id) {
+        const existingResult = await this.hasRatedProduct(
+          fromUserId,
+          ratingData.product_id
+        )
+
+        if (!existingResult.success) {
+          return { success: false, error: existingResult.error }
+        }
+
+        if (existingResult.data) {
+          return {
+            success: false,
+            error: {
+              message: 'Você já avaliou esta negociação',
+              code: 'ALREADY_RATED',
+            },
+          }
+        }
+      }
+
       const insertData: RatingInsert = {
         from_user_id: fromUserId,
         to_user_id: ratingData.to_user_id,
         rating: ratingData.rating,
         comment: ratingData.comment || null,
         service_id: ratingData.service_id || null,
+        product_id: ratingData.product_id || null,
       }
 
       const result = await this.create(insertData)
@@ -192,6 +216,36 @@ export class RatingService extends BaseService<Rating> {
         .select('id')
         .eq('from_user_id', userId)
         .eq('service_id', serviceId)
+        .limit(1)
+
+      if (error) {
+        return this.handleError(error)
+      }
+
+      return {
+        success: true,
+        data: (data?.length || 0) > 0,
+      }
+    } catch (error) {
+      return this.handleError(error)
+    }
+  }
+
+  /**
+   * Verifica se usuário já avaliou um produto (negociação na feira)
+   */
+  public async hasRatedProduct(
+    userId: string,
+    productId: string
+  ): Promise<ServiceResult<boolean>> {
+    try {
+      const client = await this.ensureClient()
+
+      const { data, error } = await client
+        .from(this.tableName as any)
+        .select('id')
+        .eq('from_user_id', userId)
+        .eq('product_id', productId)
         .limit(1)
 
       if (error) {

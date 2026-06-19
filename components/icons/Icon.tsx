@@ -123,6 +123,27 @@ export const ICON_PATHS = {
       <path d="M9.5 9.5l5 5M14.5 9.5l-5 5" />
     </>
   ),
+  menu: <path d="M4 7h16M4 12h16M4 17h16" />,
+  users: (
+    <>
+      <circle cx="9" cy="8" r="3.2" />
+      <path d="M3.5 20v-1a5.5 5.5 0 0 1 5.5 -5.5h0a5.5 5.5 0 0 1 5.5 5.5v1" />
+      <path d="M16 7.2a3 3 0 0 1 0 5.8M19 20v-1a4.7 4.7 0 0 0 -3 -4.4" />
+    </>
+  ),
+  coin: (
+    <>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M9 9.5a3 2 0 0 1 6 0c0 1.2 -1.4 1.7 -3 2c-1.6 .3 -3 .8 -3 2a3 2 0 0 0 6 0" />
+    </>
+  ),
+  book: (
+    <>
+      <path d="M5 4.5a2 2 0 0 1 2 -1.5h10a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-10a2 2 0 0 0 -2 1.5" />
+      <path d="M5 4.5v14a2 2 0 0 0 2 1.5h10" />
+      <path d="M8 7h7M8 10h7" />
+    </>
+  ),
 } as const
 
 export type IconName = keyof typeof ICON_PATHS

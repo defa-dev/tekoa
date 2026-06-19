@@ -53,6 +53,24 @@ export async function updateProductStatusAction(
 
   revalidatePath('/feira')
   revalidatePath(`/feira/${id}`)
+  revalidatePath('/feira/minhas')
+  return { success: true, data: null }
+}
+
+/**
+ * Remove um produto do usuário da feira.
+ */
+export async function deleteProductAction(id: string): Promise<ActionResult> {
+  const user = await getAuthUser()
+  if (!user) return { success: false, error: 'Faça login para continuar' }
+
+  const result = await getProductService().deleteProduct(id, user.id)
+  if (!result.success) {
+    return { success: false, error: result.error?.message || 'Erro ao remover' }
+  }
+
+  revalidatePath('/feira')
+  revalidatePath('/feira/minhas')
   return { success: true, data: null }
 }
 

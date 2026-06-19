@@ -7,6 +7,7 @@ import {
   updateServiceStatusAction,
   deleteServiceAction,
 } from '@/app/(app)/trocas/actions'
+import { BoostButton } from './BoostButton'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { useToast } from '@/components/ui/Toast'
@@ -100,6 +101,7 @@ export function MyServiceRow({
           >
             Remover
           </Button>
+          <BoostButton serviceId={service.id} />
         </div>
       )}
     </article>

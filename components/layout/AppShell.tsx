@@ -1,5 +1,6 @@
 import { SideNav } from './SideNav'
 import { BottomNav } from './BottomNav'
+import { MoreMenuFab } from './MoreMenuFab'
 import { LeftRail } from './LeftRail'
 import { RightRail } from './RightRail'
 import { RailRow } from './RailRow'
@@ -52,6 +53,7 @@ export function AppShell({ children, community, conversations, isAdmin = false }
       </RailRow>
 
       <BottomNav unreadMessages={unreadMessages} />
+      <MoreMenuFab />
     </div>
   )
 }

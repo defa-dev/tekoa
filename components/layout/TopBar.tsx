@@ -1,7 +1,9 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import { Icon } from '@/components/icons/Icon'
+import { useTekoinBalance } from './TekoinBalanceContext'
 
 export interface TopBarProps {
   title: string
@@ -19,10 +21,11 @@ export interface TopBarProps {
  */
 export function TopBar({ title, back = false, titleInfo, action }: TopBarProps) {
   const router = useRouter()
+  const tekoinBalance = useTekoinBalance()
 
   return (
     <div className="sticky top-0 z-30">
-      <div className="relative mx-4 overflow-hidden rounded-lg bg-terra text-creme">
+      <div className="relative mx-4 rounded-lg bg-terra text-creme">
         <div className="relative flex items-center gap-2 px-3 py-3">
           {back && (
             <button
@@ -41,6 +44,14 @@ export function TopBar({ title, back = false, titleInfo, action }: TopBarProps) 
             {titleInfo}
           </div>
           {action}
+          <Link
+            href="/perfil/tekoins"
+            aria-label={`Saldo de ${tekoinBalance} Tekoins`}
+            className="flex shrink-0 items-center gap-1 rounded-full bg-creme/15 px-2.5 py-1.5 font-strong text-[12px] font-bold text-creme transition-colors hover:bg-creme/25"
+          >
+            <Icon name="coin" size={14} />
+            {tekoinBalance}
+          </Link>
         </div>
       </div>
     </div>

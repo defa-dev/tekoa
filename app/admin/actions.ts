@@ -2,17 +2,13 @@
 
 import { revalidatePath } from 'next/cache'
 import { getCommunityService } from '@/data/community.service'
+import { ensureAdmin } from '@/lib/auth/admin'
 import { getCurrentProfile } from '@/lib/auth/session'
 import { geocodeAddress } from '@/lib/geocode'
 
 type ActionResult<T = unknown> =
   | { success: true; data: T }
   | { success: false; error: string }
-
-async function ensureAdmin(): Promise<boolean> {
-  const profile = await getCurrentProfile()
-  return !!profile?.is_admin
-}
 
 interface CommunityForm {
   name: string
@@ -49,6 +45,7 @@ export async function createCommunityAction(
   }
 
   const { lat, lng } = await resolveCoords(input)
+  const profile = await getCurrentProfile()
 
   const res = await getCommunityService().createCommunity({
     name: input.name,
@@ -57,6 +54,7 @@ export async function createCommunityAction(
     kind: input.kind,
     lat,
     lng,
+    created_by: profile?.id ?? null,
   })
   if (!res.success) {
     return { success: false, error: res.error?.message || 'Erro ao criar comunidade' }

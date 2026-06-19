@@ -508,6 +508,44 @@ describe('UserService', () => {
     })
   })
 
+  describe('getUserByEmail', () => {
+    it('retorna o usuário pelo e-mail', async () => {
+      const { createClient } = await import('@/lib/supabase/server')
+      vi.mocked(createClient).mockResolvedValue({
+        from: vi.fn().mockReturnValue({
+          select: vi.fn().mockReturnValue({
+            eq: vi.fn().mockReturnValue({
+              maybeSingle: vi.fn().mockResolvedValue({ data: mockUser, error: null }),
+            }),
+          }),
+        }),
+      } as any)
+
+      const result = await service.getUserByEmail('Test@Example.com')
+
+      expect(result.success).toBe(true)
+      expect(result.data?.id).toBe('user-123')
+    })
+
+    it('retorna null se não encontrar', async () => {
+      const { createClient } = await import('@/lib/supabase/server')
+      vi.mocked(createClient).mockResolvedValue({
+        from: vi.fn().mockReturnValue({
+          select: vi.fn().mockReturnValue({
+            eq: vi.fn().mockReturnValue({
+              maybeSingle: vi.fn().mockResolvedValue({ data: null, error: null }),
+            }),
+          }),
+        }),
+      } as any)
+
+      const result = await service.getUserByEmail('ninguem@example.com')
+
+      expect(result.success).toBe(true)
+      expect(result.data).toBeNull()
+    })
+  })
+
   describe('getUserService singleton', () => {
     it('deve retornar mesma instância', () => {
       const instance1 = getUserService()

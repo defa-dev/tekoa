@@ -1,5 +1,6 @@
 import { BaseService } from './base.service'
 import { territoryOrFilter } from '@/lib/territories'
+import { getTekoinService } from './tekoin.service'
 import type { ServiceResult, PaginatedResult } from './types'
 import type { Database } from '@/types/database.types'
 
@@ -217,7 +218,8 @@ export class ServiceService extends BaseService<ServiceRow> {
       const { data, error } = await query
       if (error) return this.handleError(error)
 
-      return { success: true, data: (data || []) as unknown as ServiceWithUser[] }
+      const services = (data || []) as unknown as ServiceWithUser[]
+      return { success: true, data: await getTekoinService().sortByActiveBoost(services, 'service_id') }
     } catch (error) {
       return this.handleError(error)
     }

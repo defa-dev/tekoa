@@ -9,6 +9,7 @@ type TradeInsert = Database['public']['Tables']['trades']['Insert']
 export interface CreateTradeData {
   chat_id: string
   service_id?: string | null
+  product_id?: string | null
   participant_1: string
   participant_2: string
   closed_by: string
@@ -43,6 +44,7 @@ export class TradeService extends BaseService<Trade> {
       const insertData: TradeInsert = {
         chat_id: data.chat_id,
         service_id: data.service_id ?? null,
+        product_id: data.product_id ?? null,
         participant_1: data.participant_1,
         participant_2: data.participant_2,
         closed_by: data.closed_by,

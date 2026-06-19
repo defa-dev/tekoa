@@ -2,6 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { getMuralService, type CreateMuralPostData } from '@/data/mural.service'
+import { getTekoinService } from '@/data/tekoin.service'
 import { getCurrentProfile } from '@/lib/auth/session'
 
 type ActionResult<T = unknown> =
@@ -23,6 +24,14 @@ export async function createPostAction(
   })
   if (!result.success) {
     return { success: false, error: result.error?.message || 'Erro ao publicar' }
+  }
+
+  // Mineração de Tekoin não bloqueia a publicação se falhar.
+  try {
+    await getTekoinService().mintAvisoReward(profile.id, result.data!.id)
+    await getTekoinService().checkAndAwardBadges(profile.id)
+  } catch (error) {
+    console.error('Erro ao creditar Tekoin pelo aviso:', error)
   }
 
   revalidatePath('/avisos')

@@ -149,6 +149,25 @@ export class UserService extends BaseService<User> {
   }
 
   /**
+   * Busca usuário por e-mail (ex.: admin atribuindo papel por e-mail).
+   */
+  public async getUserByEmail(email: string): Promise<ServiceResult<User | null>> {
+    try {
+      const client = await this.ensureClient()
+      const { data, error } = await client
+        .from(this.tableName as any)
+        .select('*')
+        .eq('email', email.trim().toLowerCase())
+        .maybeSingle()
+
+      if (error) return this.handleError(error)
+      return { success: true, data: (data as User) ?? null }
+    } catch (error) {
+      return this.handleError(error)
+    }
+  }
+
+  /**
    * Atualiza o perfil do usuário autenticado
    */
   public async updateProfile(

@@ -46,6 +46,7 @@ export default async function ChatThreadPage({
   // Contexto da conversa (serviço ou produto)
   let subtitle: string | undefined
   let serviceType: 'offer' | 'request' | undefined
+  let productAcceptsTekoins = false
   if (chat.service_id) {
     const s = await getServiceService().getServiceById(chat.service_id)
     if (s.success && s.data) {
@@ -54,7 +55,10 @@ export default async function ChatThreadPage({
     }
   } else if (chat.product_id) {
     const p = await getProductService().getProductById(chat.product_id)
-    if (p.success && p.data) subtitle = p.data.title
+    if (p.success && p.data) {
+      subtitle = p.data.title
+      productAcceptsTekoins = p.data.accepts_tekoins
+    }
   }
 
   return (
@@ -84,6 +88,8 @@ export default async function ChatThreadPage({
             chatStatus={chat.status ?? 'active'}
             initiatedBy={chat.initiated_by}
             serviceId={chat.service_id}
+            productId={chat.product_id}
+            productAcceptsTekoins={productAcceptsTekoins}
             otherUserId={otherId}
             otherUserName={other?.full_name || 'Vizinho(a)'}
           />

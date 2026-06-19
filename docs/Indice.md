@@ -11,6 +11,8 @@
 | **[ds.md](ds.md)** | Design system (cores, tipografia, componentes) |
 | **[layout-web.md](layout-web.md)** | Layout e telas |
 | **[Resumo-Executivo.md](Resumo-Executivo.md)** | Visão consolidada do MVP |
+| [feature-tekoins.md](feature-tekoins.md) | Desenho da moeda social Tekoins (recompensa pós-troca, evolução para circulante) |
+| [feature-blog.md](feature-blog.md) | Desenho do blog (textos próprios + curadoria externa) — Jopói, Mutirão, Tekoin e búzios como fio narrativo |
 
 ---
 
