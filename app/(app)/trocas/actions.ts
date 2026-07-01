@@ -33,6 +33,26 @@ export async function createServiceAction(
 }
 
 /**
+ * Edita o conteúdo de um serviço do usuário (título, descrição, categoria).
+ */
+export async function updateServiceAction(
+  id: string,
+  data: Partial<CreateServiceData>
+): Promise<ActionResult<{ id: string }>> {
+  const user = await getAuthUser()
+  if (!user) return { success: false, error: 'Faça login para continuar' }
+
+  const result = await getServiceService().updateService(id, user.id, data)
+  if (!result.success) {
+    return { success: false, error: result.error?.message || 'Erro ao atualizar' }
+  }
+
+  revalidatePath('/trocas')
+  revalidatePath('/trocas/minhas')
+  return { success: true, data: { id } }
+}
+
+/**
  * Atualiza o status de um serviço do usuário (ex.: concluir, cancelar).
  */
 export async function updateServiceStatusAction(

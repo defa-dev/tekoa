@@ -7,6 +7,7 @@ import {
   updateServiceStatusAction,
   deleteServiceAction,
 } from '@/app/(app)/trocas/actions'
+import { Icon } from '@/components/icons/Icon'
 import { BoostButton } from './BoostButton'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
@@ -83,6 +84,12 @@ export function MyServiceRow({
 
       {service.status === 'active' && (
         <div className="mt-3 flex flex-wrap gap-2">
+          <Link href={`/trocas/${service.id}/editar`}>
+            <Button variant="secondary" size="sm">
+              <Icon name="pencil" size={15} />
+              Editar
+            </Button>
+          </Link>
           <Button
             variant="secondary"
             size="sm"
@@ -93,13 +100,13 @@ export function MyServiceRow({
             Encerrar na roda
           </Button>
           <Button
-            variant="secondary"
+            variant="ghost"
             size="sm"
             loading={loading === 'delete'}
             disabled={!!loading}
             onClick={handleDelete}
           >
-            Remover
+            <Icon name="trash" size={15} className="text-terra" />
           </Button>
           <BoostButton serviceId={service.id} />
         </div>
@@ -109,7 +116,6 @@ export function MyServiceRow({
 }
 
 export function InterestChatRow({
-  chatId,
   name,
   subtitle,
   status,

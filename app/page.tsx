@@ -76,7 +76,7 @@ export default async function LandingPage() {
               </h1>
               <p className="mt-4 max-w-md font-body text-[15px] leading-relaxed text-creme/70">
                 A praça digital do seu território: troque saberes e serviços,
-                faça a feira do bairro e acompanhe os avisos da vizinhança.
+                faça a feira do rolo e acompanhe os avisos da sua quebrada.
                 Economia circular, do nosso jeito.
               </p>
 
@@ -192,24 +192,7 @@ export default async function LandingPage() {
             </p>
           </Reveal>
 
-          <Reveal className="order-1 md:order-2" delay={120}>
-            <div className="relative mx-auto flex w-full max-w-sm items-center">
-              <div
-                aria-hidden
-                className="tk-rotate-slow-rev absolute inset-x-0 top-1/2 mx-auto aspect-square w-[112%] -translate-y-1/2 rounded-full border border-dashed border-urucum/30"
-              />
-              <div className="relative w-full overflow-hidden rounded-2xl border-2 border-ouro/30 shadow-2xl">
-                <Image
-                  src={heroImg}
-                  alt="Ilustração em círculos concêntricos: a aldeia no centro, em volta o quilombo, a favela e a mata — a roda da comunidade"
-                  placeholder="blur"
-                  sizes="(max-width: 768px) 90vw, 384px"
-                  className="h-auto w-full object-cover"
-                />
-              </div>
-            </div>
-          </Reveal>
-        </div>
+       </div>
       </section>
 
       <Frieze src="/images/jabuti.png" tone="terra" height={46} opacity={0.9} />
@@ -218,11 +201,11 @@ export default async function LandingPage() {
       <section className="bg-terra px-6 py-16 text-creme">
         <Reveal className="mx-auto max-w-xl text-center">
           <h2 className="font-display text-[34px] leading-tight sm:text-[42px]">
-            Bora fechar a roda?
+            Bora girar a roda?
           </h2>
           <p className="mx-auto mt-3 max-w-md font-body text-[14px] text-creme/80">
             Sua comunidade já está se movimentando. Entre, ofereça o que sabe
-            fazer e descubra quem está pertinho de você.
+            fazer e descubra quem está perto de você.
           </p>
           <div className="mx-auto mt-7 flex max-w-xs flex-col gap-3">
             <Link href="/signup">

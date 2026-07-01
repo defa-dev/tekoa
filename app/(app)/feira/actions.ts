@@ -75,6 +75,28 @@ export async function deleteProductAction(id: string): Promise<ActionResult> {
 }
 
 /**
+ * Edita o conteúdo de um produto do usuário (título, descrição, preço, etc.).
+ */
+export async function updateProductAction(
+  id: string,
+  data: Partial<CreateProductData>
+): Promise<ActionResult<{ id: string }>> {
+  const user = await getAuthUser()
+  if (!user) return { success: false, error: 'Faça login para continuar' }
+
+  const result = await getProductService().updateProduct(id, user.id, data)
+  if (!result.success) {
+    return { success: false, error: result.error?.message || 'Erro ao atualizar' }
+  }
+
+  revalidatePath('/feira')
+  revalidatePath(`/feira/${id}`)
+  revalidatePath('/feira/minhas')
+  revalidatePath('/dashboard')
+  return { success: true, data: { id } }
+}
+
+/**
  * Inicia (ou reaproveita) uma conversa de negociação sobre um produto.
  */
 export async function startProductChatAction(

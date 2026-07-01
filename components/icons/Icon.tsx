@@ -144,6 +144,14 @@ export const ICON_PATHS = {
       <path d="M8 7h7M8 10h7" />
     </>
   ),
+  pencil: (
+    <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4M13.5 6.5l4 4" />
+  ),
+  trash: (
+    <>
+      <path d="M4 7h16M10 11v6M14 11v6M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12M9 7v-3h6v3" />
+    </>
+  ),
 } as const
 
 export type IconName = keyof typeof ICON_PATHS

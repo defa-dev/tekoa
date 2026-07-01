@@ -26,11 +26,13 @@ export default async function MeusProdutosPage() {
     chatSvc.getUserChats(profile.id),
   ])
 
-  const products = productsRes.success ? productsRes.data ?? [] : []
+  const allProducts = productsRes.success ? productsRes.data ?? [] : []
+  const activeProducts = allProducts.filter((p) => p.status === 'available')
+  const closedProducts = allProducts.filter((p) => p.status !== 'available')
   const allChats = chatsRes.success ? chatsRes.data ?? [] : []
   const negotiations = allChats.filter((c) => !!c.product_id)
 
-  const myProductIds = new Set(products.map((p) => p.id))
+  const myProductIds = new Set(allProducts.map((p) => p.id))
   const otherProductIds = Array.from(
     new Set(
       negotiations
@@ -42,7 +44,7 @@ export default async function MeusProdutosPage() {
     otherProductIds.map((id) => productSvc.getProductById(id))
   )
   const productTitleMap = new Map<string, string>([
-    ...products.map((p): [string, string] => [p.id, p.title]),
+    ...allProducts.map((p): [string, string] => [p.id, p.title]),
     ...otherProducts
       .filter((r) => r.success && r.data)
       .map((r): [string, string] => [r.data!.id, r.data!.title]),
@@ -72,7 +74,7 @@ export default async function MeusProdutosPage() {
       <div className="flex flex-col gap-6 px-4 py-5">
         <section>
           <SectionLabel>Meus anúncios</SectionLabel>
-          {products.length === 0 ? (
+          {activeProducts.length === 0 ? (
             <EmptyState
               icon="bag"
               title="Nada na feira ainda"
@@ -84,12 +86,23 @@ export default async function MeusProdutosPage() {
             </EmptyState>
           ) : (
             <div className="mt-3 flex flex-col gap-3">
-              {products.map((product) => (
+              {activeProducts.map((product) => (
                 <MyProductRow key={product.id} product={product} />
               ))}
             </div>
           )}
         </section>
+
+        {closedProducts.length > 0 && (
+          <section>
+            <SectionLabel>Encerrados</SectionLabel>
+            <div className="mt-3 flex flex-col gap-3">
+              {closedProducts.map((product) => (
+                <MyProductRow key={product.id} product={product} />
+              ))}
+            </div>
+          </section>
+        )}
 
         <section>
           <SectionLabel>Negociações</SectionLabel>

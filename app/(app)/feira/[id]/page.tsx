@@ -6,6 +6,7 @@ import { Avatar } from '@/components/ui/Avatar'
 import { Badge } from '@/components/ui/Badge'
 import { NegotiateButton } from '@/components/features/products/NegotiateButton'
 import { ProductGallery } from '@/components/features/products/ProductGallery'
+import { ProductOwnerBar } from '@/components/features/products/ProductOwnerBar'
 import { categoryLabel, PRODUCT_CATEGORIES } from '@/lib/categories'
 import { formatBRL, timeAgo } from '@/lib/utils'
 
@@ -53,7 +54,9 @@ export default async function ProductDetailPage({
           </span>
         </div>
 
-        <div className="mt-2 flex flex-wrap gap-1.5">
+        {isOwner && <ProductOwnerBar product={product} />}
+
+        <div className="mt-3 flex flex-wrap gap-1.5">
           <Badge type="categoria">
             {categoryLabel(PRODUCT_CATEGORIES, product.category)}
           </Badge>
@@ -82,18 +85,14 @@ export default async function ProductDetailPage({
         </div>
       </div>
 
-      <div
-        className="sticky bottom-0 border-t border-palha bg-creme px-4 py-3"
-        style={{ paddingBottom: 'max(env(safe-area-inset-bottom), 12px)' }}
-      >
-        {isOwner ? (
-          <p className="text-center font-body text-[13px] text-tinta-mid">
-            Este anúncio é seu.
-          </p>
-        ) : (
+      {!isOwner && (
+        <div
+          className="sticky bottom-0 border-t border-palha bg-creme px-4 py-3"
+          style={{ paddingBottom: 'max(env(safe-area-inset-bottom), 12px)' }}
+        >
           <NegotiateButton productId={product.id} />
-        )}
-      </div>
+        </div>
+      )}
     </>
   )
 }

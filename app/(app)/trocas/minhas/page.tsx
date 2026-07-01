@@ -27,8 +27,10 @@ export default async function MinhasTrocasPage() {
   const mutiraoSvc = getMutiraoService()
 
   const servicesRes = await svc.getUserServices(profile.id)
-  const services = servicesRes.success ? servicesRes.data ?? [] : []
-  const serviceIds = services.map((s) => s.id)
+  const allServices = servicesRes.success ? servicesRes.data ?? [] : []
+  const services = allServices.filter((s) => s.status === 'active' || s.status === 'matched')
+  const closedServices = allServices.filter((s) => s.status === 'completed' || s.status === 'cancelled')
+  const serviceIds = allServices.map((s) => s.id)
 
   const [sentRes, receivedRes] = await Promise.all([
     chatSvc.getServiceInterestsSent(profile.id),
@@ -128,6 +130,21 @@ export default async function MinhasTrocasPage() {
             </div>
           )}
         </section>
+
+        {closedServices.length > 0 && (
+          <section>
+            <SectionLabel>Encerradas</SectionLabel>
+            <div className="mt-3 flex flex-col gap-3">
+              {closedServices.map((service) => (
+                <MyServiceRow
+                  key={service.id}
+                  service={service}
+                  pendingInterests={0}
+                />
+              ))}
+            </div>
+          </section>
+        )}
 
         {(organized.length > 0 || confirmed.length > 0) && (
           <section>
